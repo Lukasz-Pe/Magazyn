@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Warehouse</string>
+    <string name="navigation_drawer_open">Open menu</string>
+    <string name="navigation_drawer_close">Close menu</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Menu</string>
+    <string name="action_settings">Ustawienia</string>
+
+    <string name="menu_warehouse">Warehouse</string>
+    <string name="menu_shop">Shop</string>
+    <string name="menu_customer">Customer</string>
+    <string name="menu_product">Product data</string>
+    <string name="menu_value_box">Value box</string>
+    <string name="menu_next_inspection_date">Inpection dates</string>
+    <string name="menu_market">Market</string>
+    <string name="menu_markets_warehouse">Market\'s Warehouse</string>
+</resources>
