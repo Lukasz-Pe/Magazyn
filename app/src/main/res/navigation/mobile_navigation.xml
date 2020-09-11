@@ -7,51 +7,51 @@
 
     <fragment
         android:id="@+id/nav_warehouse"
-        android:name="com.egm.magazyn.ui.home.HomeFragment"
+        android:name="com.egm.magazyn.ui.general.myFragment"
         android:label="@string/menu_warehouse"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/basic_layout" />
 
     <fragment
         android:id="@+id/nav_shop"
-        android:name="com.egm.magazyn.ui.gallery.GalleryFragment"
+        android:name="com.egm.magazyn.ui.general.myFragment"
         android:label="@string/menu_shop"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/basic_layout" />
 
     <fragment
         android:id="@+id/nav_customer"
-        android:name="com.egm.magazyn.ui.slideshow.SlideshowFragment"
+        android:name="com.egm.magazyn.ui.general.myFragment"
         android:label="@string/menu_customer"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/basic_layout" />
 
     <fragment
         android:id="@+id/nav_product"
-        android:name="com.egm.magazyn.ui.slideshow.SlideshowFragment"
+        android:name="com.egm.magazyn.ui.general.myFragment"
         android:label="@string/menu_product"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/basic_layout" />
 
     <fragment
         android:id="@+id/nav_value_box"
-        android:name="com.egm.magazyn.ui.slideshow.SlideshowFragment"
+        android:name="com.egm.magazyn.ui.general.myFragment"
         android:label="@string/menu_value_box"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/basic_layout" />
 
     <fragment
         android:id="@+id/nav_next_inspection_date"
-        android:name="com.egm.magazyn.ui.slideshow.SlideshowFragment"
+        android:name="com.egm.magazyn.ui.general.myFragment"
         android:label="@string/menu_next_inspection_date"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/basic_layout" />
 
     <fragment
         android:id="@+id/nav_market"
-        android:name="com.egm.magazyn.ui.slideshow.SlideshowFragment"
+        android:name="com.egm.magazyn.ui.general.myFragment"
         android:label="@string/menu_market"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/basic_layout" />
 
     <fragment
         android:id="@+id/nav_markets_warehouse"
-        android:name="com.egm.magazyn.ui.slideshow.SlideshowFragment"
+        android:name="com.egm.magazyn.ui.general.myFragment"
         android:label="@string/menu_markets_warehouse"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/basic_layout" />
 
 
 </navigation>
