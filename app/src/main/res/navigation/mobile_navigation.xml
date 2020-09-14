@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/nav_next_inspection_date"
-        android:name="com.egm.magazyn.ui.general.myFragment"
+        android:name="com.egm.magazyn.ui.reminders.remindersFragment"
         android:label="@string/menu_next_inspection_date"
         tools:layout="@layout/basic_layout" />
 
@@ -53,5 +53,10 @@
         android:label="@string/menu_markets_warehouse"
         tools:layout="@layout/basic_layout" />
 
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.egm.magazyn.ui.general.myFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/basic_layout" />
 
 </navigation>

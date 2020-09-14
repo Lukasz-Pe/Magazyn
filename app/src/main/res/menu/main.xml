@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Akcja zależna od kontekstu"
         app:showAsAction="never" />
 </menu>
