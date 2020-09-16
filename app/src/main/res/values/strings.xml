@@ -16,4 +16,5 @@
     <string name="menu_markets_warehouse">Market\'s Warehouse</string>
     <string name="string_next_inspection_date">Date of next inspection</string>
     <string name="string_time_left_to_inspection">Time left till next inspection</string>
+    <string name="string_equipment_name">Equipment name</string>
 </resources>

@@ -16,4 +16,5 @@
     <string name="menu_markets_warehouse">Magazyn rynku</string>
     <string name="string_next_inspection_date">Data następnej inspekcji</string>
     <string name="string_time_left_to_inspection">Czas pozostaly do następnej inspekcji</string>
+    <string name="string_equipment_name">Nazwa urządzenia</string>
 </resources>
