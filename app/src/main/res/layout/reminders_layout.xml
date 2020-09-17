@@ -12,12 +12,8 @@
         android:orientation="vertical"
         tools:context="com.egm.magazyn.ui.reminders.remindersFragment"
         android:drawSelectorOnTop="true"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rem_txt"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/reminders_fab"
+        android:id="@+id/reminders_add_item_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
