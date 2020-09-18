@@ -2,16 +2,19 @@ package com.egm.magazyn.ui.reminders;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.egm.magazyn.R;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.*;
 
@@ -30,15 +33,21 @@ public class remindersCursorAdapter extends CursorAdapter{
         TextView nextInspectionDate=(TextView) view.findViewById(R.id.inspection_date);
         TextView timeTillNextInspectionDate=(TextView) view.findViewById(R.id.time_till_inspection);
 
-        String equipmentNameText= context.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_EQUIPMENT_NAME));
-        String nextInspectionDateText= context.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_NEXT_INSPECTION_DATE));
-        LocalDate NextInspectionDateDate = LocalDate.parse(nextInspectionDateText);
+        String equipmentNameText= cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_EQUIPMENT_NAME));
+        String nextInspectionDateText= cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_NEXT_INSPECTION_DATE));
+//        Log.i("CursorAdapter", nextInspectionDateText);
+        DateTimeFormatter formatter=DateTimeFormatter.ofPattern("uuuu-M-d");
+        LocalDate NextInspectionDateDate = LocalDate.parse(nextInspectionDateText, formatter);
         Period diff = Period.between(LocalDate.now(),NextInspectionDateDate);
         String timeTillNextInspectionText = diff.getYears()+"-"+diff.getMonths()+"-"+diff.getDays();
 
         equipmentName.setText(equipmentNameText);
         nextInspectionDate.setText(nextInspectionDateText);
         timeTillNextInspectionDate.setText(timeTillNextInspectionText);
+
+//        equipmentName.setText("Eq name");
+//        nextInspectionDate.setText("2021-11-30");
+//        timeTillNextInspectionDate.setText("0-10-20");
     }
 }
 

@@ -5,13 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.reminders.remindersFragment">
+
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/empty_tank"/>
+    </RelativeLayout>
+
     <ListView
         android:id="@+id/reminders_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.egm.magazyn.ui.reminders.remindersFragment"
-        android:drawSelectorOnTop="true"/>
+        android:layout_height="match_parent"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/reminders_add_item_fab"
         android:layout_width="wrap_content"

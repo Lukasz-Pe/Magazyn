@@ -17,4 +17,10 @@
     <string name="string_next_inspection_date">Date of next inspection</string>
     <string name="string_time_left_to_inspection">Time left till next inspection</string>
     <string name="string_equipment_name">Equipment name</string>
+    <string name="empty_field">This field cannot be empty!</string>
+    <string name="row_saved_true">Row successfully updated!</string>
+    <string name="row_saved_false">Error occure when saving row</string>
+    <string name="rows_updated">"Updated rows: "</string>
+    <string name="add_position">Add</string>
+    <string name="edit_position">Edit</string>
 </resources>

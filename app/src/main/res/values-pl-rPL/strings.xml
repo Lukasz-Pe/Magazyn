@@ -17,4 +17,10 @@
     <string name="string_next_inspection_date">Data następnej inspekcji</string>
     <string name="string_time_left_to_inspection">Czas pozostaly do następnej inspekcji</string>
     <string name="string_equipment_name">Nazwa urządzenia</string>
+    <string name="empty_field">To pole nie może być puste!</string>
+    <string name="row_saved_true">Wpis pomyślnie zapisany!</string>
+    <string name="row_saved_false">Błąd podczas zapisu!</string>
+    <string name="rows_updated">"Zaktualizowano wpisów: "</string>
+    <string name="add_position">Dodaj</string>
+    <string name="edit_position">Edytuj</string>
 </resources>

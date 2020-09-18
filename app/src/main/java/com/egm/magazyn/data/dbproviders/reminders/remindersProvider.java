@@ -1,7 +1,6 @@
 package com.egm.magazyn.data.dbproviders.reminders;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -13,20 +12,18 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.egm.magazyn.data.dbproviders.reminders.remindersDBHelper;
-
 public class remindersProvider extends ContentProvider {
 
     private static final String LOG_TAG=remindersProvider.class.getSimpleName();
     private remindersDBHelper remindersdb;
     //IDs for UriMatcher
-    private static final int REMINDERS=100, REMINDER_ID=101;
+    private static final int REMINDERS_TABLE =100, REMINDER_ITEM =101;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     //Database and provider helper objects
     static{
-        sUriMatcher.addURI(remindersContract.CONTENT_AUTHORITY, remindersContract.remindersEntry.TABLE_NAME,REMINDERS);
-        sUriMatcher.addURI(remindersContract.CONTENT_AUTHORITY, remindersContract.remindersEntry.TABLE_NAME+"/#",REMINDER_ID);
+        sUriMatcher.addURI(remindersContract.CONTENT_AUTHORITY, remindersContract.remindersEntry.TABLE_NAME, REMINDERS_TABLE);
+        sUriMatcher.addURI(remindersContract.CONTENT_AUTHORITY, remindersContract.remindersEntry.TABLE_NAME+"/#", REMINDER_ITEM);
     }
 
     @Override
@@ -41,8 +38,11 @@ public class remindersProvider extends ContentProvider {
                         @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteDatabase db=remindersdb.getReadableDatabase();
         Cursor cursor;
-        switch(sUriMatcher.match(uri)){
-            case REMINDERS:{
+        int match=sUriMatcher.match(uri);
+        Log.i("uri",uri.toString());
+        Log.i("URIMatcher", String.valueOf(match));
+        switch(match){
+            case REMINDERS_TABLE:{
                 cursor=db.query(remindersContract.remindersEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -51,7 +51,7 @@ public class remindersProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
-            case REMINDER_ID:{
+            case REMINDER_ITEM:{
                 selection=remindersContract.remindersEntry._ID+"=?";
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor=db.query(remindersContract.remindersEntry.TABLE_NAME,
@@ -60,6 +60,7 @@ public class remindersProvider extends ContentProvider {
                         selectionArgs,
                         null, null,
                         sortOrder);
+                break;
             }
             default:{
                 throw new IllegalArgumentException("Unable to query unknown URI: " + uri);
@@ -74,10 +75,10 @@ public class remindersProvider extends ContentProvider {
     public String getType(@NonNull Uri uri) {
         final int match=sUriMatcher.match(uri);
         switch(match){
-            case REMINDERS:{
+            case REMINDERS_TABLE:{
                 return remindersContract.remindersEntry.CONTENT_LIST_TYPE;
             }
-            case REMINDER_ID:{
+            case REMINDER_ITEM:{
                 return remindersContract.remindersEntry.CONTENT_ITEM_TYPE;
             }
             default:{
@@ -90,7 +91,7 @@ public class remindersProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         switch(sUriMatcher.match(uri)){
-            case REMINDERS:{
+            case REMINDERS_TABLE:{
                 SQLiteDatabase db = remindersdb.getReadableDatabase();
                 String name = contentValues.getAsString(remindersContract.remindersEntry.COLUMN_EQUIPMENT_NAME);
                 String date = contentValues.getAsString(remindersContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE);
@@ -119,11 +120,11 @@ public class remindersProvider extends ContentProvider {
         SQLiteDatabase db = remindersdb.getWritableDatabase();
         int rowsDeleted;
         switch (sUriMatcher.match(uri)){
-            case REMINDERS:{
+            case REMINDERS_TABLE:{
                 rowsDeleted=db.delete(remindersContract.remindersEntry.TABLE_NAME,selection,selectionArgs);
                 break;
             }
-            case REMINDER_ID:{
+            case REMINDER_ITEM:{
                 selection=remindersContract.remindersEntry._ID+"=?";
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted=db.delete(remindersContract.remindersEntry.TABLE_NAME,selection,selectionArgs);
@@ -145,10 +146,10 @@ public class remindersProvider extends ContentProvider {
             return 0;
         }
         switch(sUriMatcher.match((uri))){
-            case REMINDERS:{
+            case REMINDERS_TABLE:{
                 return updateReminder(uri,contentValues, selection, selectionArgs);
             }
-            case REMINDER_ID:{
+            case REMINDER_ITEM:{
                 selection= remindersContract.remindersEntry._ID+"=?";
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateReminder(uri,contentValues, selection, selectionArgs);

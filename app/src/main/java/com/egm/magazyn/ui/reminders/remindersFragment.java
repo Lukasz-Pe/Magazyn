@@ -1,26 +1,30 @@
 package com.egm.magazyn.ui.reminders;
 
+import android.content.ContentUris;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.egm.magazyn.R;
 import com.egm.magazyn.data.dbproviders.reminders.remindersDBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.*;
 
-public class remindersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class remindersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private remindersDBHelper dbHelper;
     private remindersCursorAdapter cursorAdapter;
@@ -63,63 +67,52 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView=inflater.inflate(R.layout.reminders_layout,container,false);
-        final FloatingActionButton remFAB = (FloatingActionButton) rootView.findViewById(R.id.reminders_add_item_fab);
-        remFAB.setOnClickListener(new View.OnClickListener() {
+
+        ListView lv=(ListView) rootView.findViewById(R.id.reminders_list_view);
+        View emptyView=rootView.findViewById(R.id.empty_view);
+        lv.setEmptyView(emptyView);
+
+        dbHelper=new remindersDBHelper(getContext());
+        cursorAdapter=new remindersCursorAdapter(getContext(), null);
+        lv.setAdapter(cursorAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onClick(View view) {
-                replaceFrag(new remindersEditorFragment());
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent editRem=new Intent (getActivity(), remindersEditorActivity.class);
+                Uri content= ContentUris.withAppendedId(CONTENT_URI, id);
+                editRem.setData(content);
+                startActivity(editRem);
             }
         });
-        return rootView;
-    }
 
-    private void replaceFrag(Fragment frag){
-        FragmentTransaction ft= getParentFragmentManager().beginTransaction();
-        ft.replace(R.id.nav_host_fragment,frag);
-        ft.addToBackStack(null);
-        ft.commit();
+        final FloatingActionButton addAlert = (FloatingActionButton) rootView.findViewById(R.id.reminders_add_item_fab);
+        addAlert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), remindersEditorActivity.class);
+                startActivity(intent);
+            }
+        });
+        LoaderManager.getInstance(this).initLoader(REMINDERS_LOADER, null, this);
+        return rootView;
     }
 
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return null;
+        return new CursorLoader(getContext(),
+                CONTENT_URI,
+                REMINDERS_PROJECTION,
+                null,null,null);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-
+        cursorAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
+        cursorAdapter.swapCursor(null);
     }
 }
-
-
-/*    private remindersViewModel remindersViewModel;
-    private Context context;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        remindersViewModel =
-                new ViewModelProvider(this).get(remindersViewModel.class);
-        View root = inflater.inflate(R.layout.reminders_layout, container, false);
-        final TextView textView = root.findViewById(R.id.rem_txt);
-        remindersViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        FloatingActionButton rem_fab = root.findViewById(R.id.reminders_fab);
-        rem_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        return root;
-    }*/

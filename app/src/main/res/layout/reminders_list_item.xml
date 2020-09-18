@@ -3,11 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:orientation="vertical">
 <TextView
     android:id="@+id/equipment_name"
+    android:background="@color/colorAccent"
+    android:textColor="@color/colorPrimary"
+    android:textSize="@dimen/text_size"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -17,7 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp">
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -28,12 +30,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/string_next_inspection_date"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textAlignment="center"/>
         <TextView
             android:id="@+id/inspection_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size"/>
     </LinearLayout>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="italic"
+            android:textSize="@dimen/text_size"
             android:layout_weight="1"
             android:textAlignment="center"
             android:gravity="center_horizontal" />
