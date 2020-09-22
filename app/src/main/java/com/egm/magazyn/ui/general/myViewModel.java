@@ -12,7 +12,7 @@ public class myViewModel extends androidx.lifecycle.ViewModel {
     public myViewModel() {
 
         mText = new MutableLiveData<>();
-        mText.setValue("To jest jakiś fragment");
+        mText.setValue("To jest jakiś fragment 50%");
     }
     public void setText(String text){
         textToShow=text;
