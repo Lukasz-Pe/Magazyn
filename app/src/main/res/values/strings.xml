@@ -23,4 +23,5 @@
     <string name="rows_updated">"Updated rows: "</string>
     <string name="add_position">Add</string>
     <string name="edit_position">Edit</string>
+    <string name="string_equipment_serial_number">Equipment serial number</string>
 </resources>

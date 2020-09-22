@@ -31,12 +31,13 @@ import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remin
 
 public class remindersEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private EditText equipmentName;
+    private EditText equipmentName, serialNumber;
     private TextView nextInspectionDate;
 
     private static final String[] PROJECTION=new String[]{
             _ID,
             COLUMN_EQUIPMENT_NAME,
+            COLUMN_SERIAL_NUMBER,
             COLUMN_NEXT_INSPECTION_DATE
     };
 
@@ -61,6 +62,7 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
             setTitle(R.string.add_position);
         }
         equipmentName = (EditText) findViewById(R.id.input_eq_name);
+        serialNumber = (EditText) findViewById(R.id.input_eq_serial_number);
         nextInspectionDate = (TextView) findViewById(R.id.input_next_inspection_date);
         menuFAB = findViewById(R.id.reminders_edit_menu_fab);
         close= findViewById(R.id.reminders_edit_close_fab);
@@ -93,7 +95,7 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveData();
+                saveData(view);
                 closeMenu();
                 finish();
             }
@@ -159,25 +161,35 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
         menuFAB.show();
     }
 
-    private void saveData(){
+    private void saveData(View view){
         String equipmentNameText=equipmentName.getText().toString().trim();
+        String serialNumberText=serialNumber.getText().toString().trim();
         String nextInspectionDateString=nextInspectionDate.getText().toString().trim();
         if(equipmentNameText.isEmpty()){
-//            Snackbar.make(this,
-//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_name),
-//                    Snackbar.LENGTH_LONG).show();
-            Toast.makeText(this,
+            Snackbar.make(view,
                     getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_name),
-                    Toast.LENGTH_SHORT).show();
+                    Snackbar.LENGTH_LONG).show();
+//            Toast.makeText(this,
+//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_name),
+//                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(serialNumberText.isEmpty()){
+            Snackbar.make(view,
+                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_serial_number),
+                    Snackbar.LENGTH_LONG).show();
+//            Toast.makeText(this,
+//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_serial_number),
+//                    Toast.LENGTH_SHORT).show();
             return;
         }
         if(nextInspectionDateString.isEmpty()){
-//            Snackbar.make(this,
-//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_next_inspection_date),
-//                    Snackbar.LENGTH_LONG).show();
-            Toast.makeText(this,
+            Snackbar.make(view,
                     getString(R.string.empty_field)+"\n"+getString(R.string.string_next_inspection_date),
-                    Toast.LENGTH_SHORT).show();
+                    Snackbar.LENGTH_LONG).show();
+//            Toast.makeText(this,
+//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_next_inspection_date),
+//                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -185,28 +197,29 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
 
         ContentValues cvs=new ContentValues();
         cvs.put(COLUMN_EQUIPMENT_NAME, equipmentNameText);
+        cvs.put(COLUMN_SERIAL_NUMBER, serialNumberText);
         cvs.put(COLUMN_NEXT_INSPECTION_DATE,nextInspectionDateString);
 
         if(intent.getData()==null){
             Uri newRowID = getContentResolver().insert(CONTENT_URI, cvs);
             if(newRowID==null){
-//                Snackbar.make(view,
-//                        getString(R.string.row_saved_false),
-//                        Snackbar.LENGTH_LONG).show();
-                Toast.makeText(this, getString(R.string.row_saved_false), Toast.LENGTH_SHORT).show();
+                Snackbar.make(view,
+                        getString(R.string.row_saved_false),
+                        Snackbar.LENGTH_LONG).show();
+//                Toast.makeText(this, getString(R.string.row_saved_false), Toast.LENGTH_SHORT).show();
             }else{
-//                Snackbar.make(view,
-//                        getString(R.string.row_saved_true),
-//                        Snackbar.LENGTH_LONG).show();
-                Toast.makeText(this, getString(R.string.row_saved_true), Toast.LENGTH_SHORT).show();
+                Snackbar.make(view,
+                        getString(R.string.row_saved_true),
+                        Snackbar.LENGTH_LONG).show();
+//                Toast.makeText(this, getString(R.string.row_saved_true), Toast.LENGTH_SHORT).show();
             }
         }else{
             int affectedRows=getContentResolver().update(intent.getData(), cvs,
                     TABLE_NAME, PROJECTION);
-//            Snackbar.make(view,
-//                        getString(R.string.rows_updated+affectedRows),
-//                        Snackbar.LENGTH_LONG).show();
-            Toast.makeText(this, getString(R.string.rows_updated+affectedRows), Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,
+                        getString(R.string.rows_updated+affectedRows),
+                        Snackbar.LENGTH_LONG).show();
+//            Toast.makeText(this, getString(R.string.rows_updated+affectedRows), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -222,8 +235,9 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if(data.moveToFirst()){
-            equipmentName.setText(data.getString(data.getColumnIndex(COLUMN_EQUIPMENT_NAME)));
-            nextInspectionDate.setText(data.getString(data.getColumnIndex(COLUMN_NEXT_INSPECTION_DATE)));
+            equipmentName.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_EQUIPMENT_NAME)));
+            serialNumber.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_SERIAL_NUMBER)));
+            nextInspectionDate.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_NEXT_INSPECTION_DATE)));
         }
     }
     View.OnTouchListener onTouchListener=new View.OnTouchListener(){
@@ -237,6 +251,7 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         equipmentName.setText("");
+        serialNumber.setText("");
         nextInspectionDate.setText(getString(R.string.string_next_inspection_date));
     }
 }

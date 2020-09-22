@@ -17,6 +17,7 @@ public final class remindersContract {
         public final static String _ID=BaseColumns._ID;
         public final static String COLUMN_EQUIPMENT_NAME="name";
         public final static String COLUMN_NEXT_INSPECTION_DATE="next_inspection_date";
+        public final static String COLUMN_SERIAL_NUMBER="serial_number";
 
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+remindersEntry.TABLE_NAME;

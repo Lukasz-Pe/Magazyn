@@ -23,4 +23,5 @@
     <string name="rows_updated">"Zaktualizowano wpisów: "</string>
     <string name="add_position">Dodaj</string>
     <string name="edit_position">Edytuj</string>
+    <string name="string_equipment_serial_number">Numer seryjny urządzenia</string>
 </resources>

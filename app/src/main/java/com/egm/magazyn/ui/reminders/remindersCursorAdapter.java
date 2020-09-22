@@ -31,46 +31,21 @@ public class remindersCursorAdapter extends CursorAdapter{
     public void bindView(View view, Context context, Cursor cursor) {
         TextView equipmentName=(TextView) view.findViewById(R.id.equipment_name);
         TextView nextInspectionDate=(TextView) view.findViewById(R.id.inspection_date);
+        TextView serialNumber=(TextView) view.findViewById(R.id.equipment_serial_number);
         TextView timeTillNextInspectionDate=(TextView) view.findViewById(R.id.time_till_inspection);
 
         String equipmentNameText= cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_EQUIPMENT_NAME));
+        String equipmentSerialNumberText=cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_SERIAL_NUMBER));
         String nextInspectionDateText= cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_NEXT_INSPECTION_DATE));
-//        Log.i("CursorAdapter", nextInspectionDateText);
         DateTimeFormatter formatter=DateTimeFormatter.ofPattern("uuuu-M-d");
         LocalDate NextInspectionDateDate = LocalDate.parse(nextInspectionDateText, formatter);
         Period diff = Period.between(LocalDate.now(),NextInspectionDateDate);
         String timeTillNextInspectionText = diff.getYears()+"-"+diff.getMonths()+"-"+diff.getDays();
 
         equipmentName.setText(equipmentNameText);
+        serialNumber.setText(equipmentSerialNumberText);
         nextInspectionDate.setText(nextInspectionDateText);
         timeTillNextInspectionDate.setText(timeTillNextInspectionText);
 
-//        equipmentName.setText("Eq name");
-//        nextInspectionDate.setText("2021-11-30");
-//        timeTillNextInspectionDate.setText("0-10-20");
     }
 }
-
-
-/*
-From String to Date
-
-String dtStart = "2010-10-15T09:27:37Z";
-SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-try {
-    Date date = format.parse(dtStart);
-    System.out.println(date);
-} catch (ParseException e) {
-    e.printStackTrace();
-}
-From Date to String
-
-SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-try {
-    Date date = new Date();
-    String dateTime = dateFormat.format(date);
-    System.out.println("Current Date Time : " + dateTime);
-} catch (ParseException e) {
-    e.printStackTrace();
-}
- */

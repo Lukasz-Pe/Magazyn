@@ -33,6 +33,7 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
     static final String[] REMINDERS_PROJECTION=new String[]{
             _ID,
             COLUMN_EQUIPMENT_NAME,
+            COLUMN_SERIAL_NUMBER,
             COLUMN_NEXT_INSPECTION_DATE
     };
 
