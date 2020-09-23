@@ -19,7 +19,6 @@
     <ProgressBar
         android:id="@+id/product_used"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:progress="50"
         android:scaleY="5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_size"

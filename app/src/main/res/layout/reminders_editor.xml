@@ -7,7 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
     <LinearLayout
-        android:id="@+id/rem_edit_fields"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical"

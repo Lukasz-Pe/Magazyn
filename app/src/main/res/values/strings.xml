@@ -24,4 +24,12 @@
     <string name="add_position">Add</string>
     <string name="edit_position">Edit</string>
     <string name="string_equipment_serial_number">Equipment serial number</string>
+    <string name="product_name">Product name</string>
+    <string name="product_unit_price">Unit price</string>
+    <string name="product_unit_of_account">Unit</string>
+    <string name="product_quantity">Quantity</string>
+    <string name="product_origin">Origin</string>
+    <string name="product_last_delivery_price">Last delivery price</string>
+    <string name="product_low_quantity_alert">Low quantity alert threshold</string>
+    <string name="product_low_quantity_warning">Low quantity warning threshold</string>
 </resources>

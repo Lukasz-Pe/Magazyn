@@ -24,4 +24,12 @@
     <string name="add_position">Dodaj</string>
     <string name="edit_position">Edytuj</string>
     <string name="string_equipment_serial_number">Numer seryjny urządzenia</string>
+    <string name="product_name">Nazwa produktu</string>
+    <string name="product_unit_price">Cena jednostkowa</string>
+    <string name="product_unit_of_account">Jednostka</string>
+    <string name="product_quantity">Ilość</string>
+    <string name="product_origin">Pochodzenie</string>
+    <string name="product_last_delivery_price">Cena ostatniej dostawy</string>
+    <string name="product_low_quantity_alert">Alarm o małej ilości towaru</string>
+    <string name="product_low_quantity_warning">Ostrzeżenie o małej ilości towaru</string>
 </resources>

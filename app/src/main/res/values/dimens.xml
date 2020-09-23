@@ -7,4 +7,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_spacing">60dp</dimen>
     <dimen name="text_size">20sp</dimen>
+    <dimen name="element_size">20dp</dimen>
+    <dimen name="list_item_horizontal_margin">5dp</dimen>
 </resources>
