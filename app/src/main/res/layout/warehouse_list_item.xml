@@ -20,6 +20,8 @@
         android:id="@+id/product_used"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:scaleY="5"
+        android:indeterminate="true"
+        android:max="100"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_size"
         />

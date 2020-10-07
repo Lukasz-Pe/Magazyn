@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_marginHorizontal=""
         android:layout_gravity="top">
         <EditText
             android:id="@+id/product_input_name"
@@ -114,10 +113,10 @@
             android:textAlignment="textEnd"
             android:hint="@string/product_last_delivery_price"/>
         <TextView
+            android:id="@+id/last_delivery_accounting_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
-            android:text="€" />
+            android:textSize="@dimen/text_size" />
         </LinearLayout>
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton

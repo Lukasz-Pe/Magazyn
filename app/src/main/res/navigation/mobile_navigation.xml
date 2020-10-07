@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_warehouse"
-        android:name="com.egm.magazyn.ui.general.myFragment"
+        android:name="com.egm.magazyn.ui.warehouse.warehouseFragment"
         android:label="@string/menu_warehouse"
         tools:layout="@layout/basic_layout" />
 

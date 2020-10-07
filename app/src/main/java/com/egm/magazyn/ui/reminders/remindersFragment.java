@@ -44,7 +44,7 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
     private String mParam2;
 
     public remindersFragment(){
-        //Req empty public ctor
+        //Req empty public c'tor
     }
 
     public static remindersFragment newInstance(String param1, String param2){
