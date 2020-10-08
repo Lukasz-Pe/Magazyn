@@ -19,27 +19,22 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.egm.magazyn.R;
-import com.egm.magazyn.data.dbproviders.reminders.remindersDBHelper;
+import com.egm.magazyn.data.dbClasses.dbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.COLUMN_EQUIPMENT_NAME;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.COLUMN_SERIAL_NUMBER;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.CONTENT_URI;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry._ID;
+import static com.egm.magazyn.data.dbClasses.dbContract.warehouseEntry.*;
 
 public class warehouseFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private remindersDBHelper dbHelper;
+    private com.egm.magazyn.data.dbClasses.dbHelper dbHelper;
     private warehouseCursorAdapter cursorAdapter;
 
-    private static final int REMINDERS_LOADER=0;
-    static final String[] REMINDERS_PROJECTION=new String[]{
+    private static final int WAREHOUSE_LOADER =0;
+    static final String[] WAREHOUSE_PROJECTION =new String[]{
             _ID,
-            COLUMN_EQUIPMENT_NAME,
-            COLUMN_SERIAL_NUMBER,
-            COLUMN_NEXT_INSPECTION_DATE
+            /*COL_PRODUCT_NAME,
+            COL_QUANTITY,
+            COL_QUANTITY_AFTER_LAST_DELIVERY*/
     };
 
     private static final String ARG_PARAM1="param1";
@@ -72,26 +67,26 @@ public class warehouseFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View rootView=inflater.inflate(R.layout.reminders_layout,container,false);
+        View rootView=inflater.inflate(R.layout.warehouse_layout,container,false);
 
-        ListView lv=(ListView) rootView.findViewById(R.id.reminders_list_view);
+        ListView lv=(ListView) rootView.findViewById(R.id.warehouse_list_view);
         View emptyView=rootView.findViewById(R.id.empty_view);
         lv.setEmptyView(emptyView);
 
-        dbHelper=new remindersDBHelper(getContext());
+        dbHelper=new dbHelper(getContext());
         cursorAdapter=new warehouseCursorAdapter(getContext(), null);
         lv.setAdapter(cursorAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent editRem=new Intent (getActivity(), warehouseEditorActivity.class);
+                Intent editWare=new Intent (getActivity(), warehouseEditorActivity.class);
                 Uri content= ContentUris.withAppendedId(CONTENT_URI, id);
-                editRem.setData(content);
-                startActivity(editRem);
+                editWare.setData(content);
+                startActivity(editWare);
             }
         });
 
-        final FloatingActionButton addPosition = (FloatingActionButton) rootView.findViewById(R.id.reminders_add_item_fab);
+        final FloatingActionButton addPosition = (FloatingActionButton) rootView.findViewById(R.id.warehouse_add_product);
         addPosition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +94,7 @@ public class warehouseFragment extends Fragment implements LoaderManager.LoaderC
                 startActivity(intent);
             }
         });
-        LoaderManager.getInstance(this).initLoader(REMINDERS_LOADER, null, this);
+        LoaderManager.getInstance(this).initLoader(WAREHOUSE_LOADER, null, this);
         return rootView;
     }
 
@@ -108,7 +103,7 @@ public class warehouseFragment extends Fragment implements LoaderManager.LoaderC
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         return new CursorLoader(getContext(),
                 CONTENT_URI,
-                REMINDERS_PROJECTION,
+                WAREHOUSE_PROJECTION,
                 null,null,null);
     }
 

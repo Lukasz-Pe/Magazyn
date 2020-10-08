@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,13 +20,13 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import com.egm.magazyn.R;
-import com.egm.magazyn.data.dbproviders.reminders.remindersProvider;
+import com.egm.magazyn.data.dbClasses.dbProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.*;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.*;
 
 public class remindersEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -193,7 +192,7 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
             return;
         }
 
-        remindersProvider rp=new remindersProvider();
+        dbProvider rp=new dbProvider();
 
         ContentValues cvs=new ContentValues();
         cvs.put(COLUMN_EQUIPMENT_NAME, equipmentNameText);

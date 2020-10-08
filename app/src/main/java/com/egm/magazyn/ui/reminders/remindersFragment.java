@@ -19,14 +19,14 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.egm.magazyn.R;
-import com.egm.magazyn.data.dbproviders.reminders.remindersDBHelper;
+import com.egm.magazyn.data.dbClasses.dbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.*;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.*;
 
 public class remindersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private remindersDBHelper dbHelper;
+    private com.egm.magazyn.data.dbClasses.dbHelper dbHelper;
     private remindersCursorAdapter cursorAdapter;
 
     private static final int REMINDERS_LOADER=0;
@@ -73,7 +73,7 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
         View emptyView=rootView.findViewById(R.id.empty_view);
         lv.setEmptyView(emptyView);
 
-        dbHelper=new remindersDBHelper(getContext());
+        dbHelper=new dbHelper(getContext());
         cursorAdapter=new remindersCursorAdapter(getContext(), null);
         lv.setAdapter(cursorAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){

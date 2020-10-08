@@ -2,13 +2,11 @@ package com.egm.magazyn.ui.reminders;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.egm.magazyn.R;
 
@@ -16,7 +14,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.*;
+import static com.egm.magazyn.data.dbClasses.dbContract.*;
 
 public class remindersCursorAdapter extends CursorAdapter{
 

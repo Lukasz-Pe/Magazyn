@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.egm.magazyn.R;
 
-import static com.egm.magazyn.data.dbproviders.warehouse.warehouseContract.warehouseEntry;
+import static com.egm.magazyn.data.dbClasses.dbContract.warehouseEntry;
 
 public class warehouseCursorAdapter extends CursorAdapter{
 

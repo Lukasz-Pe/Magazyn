@@ -19,18 +19,18 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.egm.magazyn.R;
-import com.egm.magazyn.data.dbproviders.reminders.remindersProvider;
+import com.egm.magazyn.data.dbClasses.dbProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.COLUMN_EQUIPMENT_NAME;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.COLUMN_SERIAL_NUMBER;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.CONTENT_URI;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry.TABLE_NAME;
-import static com.egm.magazyn.data.dbproviders.reminders.remindersContract.remindersEntry._ID;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COLUMN_EQUIPMENT_NAME;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COLUMN_SERIAL_NUMBER;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.CONTENT_URI;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.TABLE_NAME;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry._ID;
 
 //import android.content.CursorLoader;
 
@@ -41,9 +41,9 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
 
     private static final String[] PROJECTION=new String[]{
             _ID,
-            COLUMN_EQUIPMENT_NAME,
+            /*COLUMN_EQUIPMENT_NAME,
             COLUMN_SERIAL_NUMBER,
-            COLUMN_NEXT_INSPECTION_DATE
+            COLUMN_NEXT_INSPECTION_DATE*/
     };
 
     private Intent intent;
@@ -57,7 +57,7 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reminders_editor);
+        setContentView(R.layout.warehouse_editor);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         intent=getIntent();
         if(intent.getData()!=null){
@@ -66,6 +66,7 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         }else{
             setTitle(R.string.add_position);
         }
+        /*
         equipmentName = (EditText) findViewById(R.id.input_eq_name);
         serialNumber = (EditText) findViewById(R.id.input_eq_serial_number);
         nextInspectionDate = (TextView) findViewById(R.id.input_next_inspection_date);
@@ -140,7 +141,7 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
                         }, year, month, day);
                 picker.show();
             }
-        });
+        });*/
 
     }
 
@@ -198,7 +199,7 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
             return;
         }
 
-        remindersProvider rp=new remindersProvider();
+        dbProvider rp=new dbProvider();
 
         ContentValues cvs=new ContentValues();
         cvs.put(COLUMN_EQUIPMENT_NAME, equipmentNameText);
@@ -231,18 +232,18 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this,
-                intent.getData(),
-                PROJECTION,
-                null,null,null);
-    }
+//        return new CursorLoader(this,
+//                intent.getData(),
+//                PROJECTION,
+//                null,null,null);
+    return null;}
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if(data.moveToFirst()){
-            equipmentName.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_EQUIPMENT_NAME)));
-            serialNumber.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_SERIAL_NUMBER)));
-            nextInspectionDate.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_NEXT_INSPECTION_DATE)));
+//            equipmentName.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_EQUIPMENT_NAME)));
+//            serialNumber.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_SERIAL_NUMBER)));
+//            nextInspectionDate.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_NEXT_INSPECTION_DATE)));
         }
     }
     View.OnTouchListener onTouchListener=new View.OnTouchListener(){
@@ -255,8 +256,8 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        equipmentName.setText("");
-        serialNumber.setText("");
-        nextInspectionDate.setText(getString(R.string.string_next_inspection_date));
+//        equipmentName.setText("");
+//        serialNumber.setText("");
+//        nextInspectionDate.setText(getString(R.string.string_next_inspection_date));
     }
 }
