@@ -32,4 +32,6 @@
     <string name="product_last_delivery_price">Cena jednostkowa ostatniej dostawy</string>
     <string name="product_low_quantity_alert">Alarm o małej ilości towaru</string>
     <string name="product_low_quantity_warning">Ostrzeżenie o małej ilości towaru</string>
+    <string name="product_last_delivery_date">Data ostatniej dostawy</string>
+    <string name="string_modification_date_set">Ustawiam dziś jako datę modyfikacji!</string>
 </resources>

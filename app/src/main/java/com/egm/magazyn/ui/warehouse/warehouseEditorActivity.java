@@ -8,42 +8,45 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.egm.magazyn.R;
 import com.egm.magazyn.data.dbClasses.dbProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.Calendar;
+import android.widget.DatePicker;
 
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COLUMN_EQUIPMENT_NAME;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COLUMN_SERIAL_NUMBER;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.CONTENT_URI;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.TABLE_NAME;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry._ID;
+import static com.egm.magazyn.data.dbClasses.dbContract.warehouseEntry.*;
 
-//import android.content.CursorLoader;
+import androidx.loader.content.CursorLoader;
 
 public class warehouseEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private EditText equipmentName, serialNumber;
-    private TextView nextInspectionDate;
+    private EditText product, quantity, unitPrice, lowQuantityWarning, lowQuantityAlarm, lastDeliveryUnitPrice;
+    private Spinner unitPriceAccountingUnit, lowQuantityWarningUnit, lowQuantityAlarmUnit, source;
+    private TextView lastDeliveryDate;
 
     private static final String[] PROJECTION=new String[]{
             _ID,
-            /*COLUMN_EQUIPMENT_NAME,
-            COLUMN_SERIAL_NUMBER,
-            COLUMN_NEXT_INSPECTION_DATE*/
+            COL_PRODUCT_NAME,
+            COL_QUANTITY,
+            COL_UNIT_PRICE,
+            COL_ACCOUNTING_UNIT,
+            COL_LOW_QUANTITY_WARNING,
+            COL_LOW_QUANTITY_WARNING_UNIT,
+            COL_LOW_QUANTITY_ALARM,
+            COL_LOW_QUANTITY_ALARM_UNIT,
+            COL_SOURCE,
+            COL_LAST_DELIVERY_PRICE,
+            COL_LAST_DELIVERY_DATE
     };
 
     private Intent intent;
@@ -66,15 +69,26 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         }else{
             setTitle(R.string.add_position);
         }
-        /*
-        equipmentName = (EditText) findViewById(R.id.input_eq_name);
-        serialNumber = (EditText) findViewById(R.id.input_eq_serial_number);
-        nextInspectionDate = (TextView) findViewById(R.id.input_next_inspection_date);
-        menuFAB = findViewById(R.id.reminders_edit_menu_fab);
-        close= findViewById(R.id.reminders_edit_close_fab);
-        save= findViewById(R.id.reminders_edit_save_fab);
-        delete= findViewById(R.id.reminders_edit_delete_fab);
-        cancel= findViewById(R.id.reminders_edit_cancel_fab);
+
+        product = (EditText) findViewById(R.id.product_input_name);
+        quantity = (EditText) findViewById(R.id.product_input_quantity);
+        unitPrice = (EditText) findViewById(R.id.product_input_unit_price);
+        lowQuantityWarning = (EditText) findViewById(R.id.product_input_low_quantity_warning);
+        lowQuantityAlarm = (EditText) findViewById(R.id.product_input_low_quantity_alert);
+        lastDeliveryUnitPrice = (EditText) findViewById(R.id.product_input_last_delivery_unit_price);
+
+//        unitPriceAccountingUnit = (Spinner) findViewById(R.id.product_choose_unit_of_account);
+//        lowQuantityWarningUnit = (Spinner) findViewById(R.id.product_choose_warning_unit);
+//        lowQuantityAlarmUnit = (Spinner) findViewById(R.id.product_choose_alarm_unit);
+//        source = (Spinner) findViewById(R.id.product_choose_origin);
+
+        lastDeliveryDate = (TextView) findViewById(R.id.last_delivery_date);
+
+        menuFAB = findViewById(R.id.warehouse_edit_menu_fab);
+        close= findViewById(R.id.warehouse_edit_close_fab);
+        save= findViewById(R.id.warehouse_edit_save_fab);
+        delete= findViewById(R.id.warehouse_edit_delete_fab);
+        cancel= findViewById(R.id.warehouse_edit_cancel_fab);
         close.hide();
         delete.hide();
         save.hide();
@@ -112,7 +126,7 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
                 finish();
             }
         });
-        nextInspectionDate.setOnClickListener(new View.OnClickListener() {
+        lastDeliveryDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Calendar cldr = Calendar.getInstance();
@@ -136,12 +150,12 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
                                 }else{
                                     dom=String.valueOf(dayOfMonth);
                                 }
-                                nextInspectionDate.setText(year + "-" + moy + "-" + dom);
+                                lastDeliveryDate.setText(year + "-" + moy + "-" + dom);
                             }
                         }, year, month, day);
                 picker.show();
             }
-        });*/
+        });
 
     }
 
@@ -168,43 +182,35 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
     }
 
     private void saveData(View view){
-        String equipmentNameText=equipmentName.getText().toString().trim();
-        String serialNumberText=serialNumber.getText().toString().trim();
-        String nextInspectionDateString=nextInspectionDate.getText().toString().trim();
-        if(equipmentNameText.isEmpty()){
+        String productNameText= product.getText().toString().trim();
+        String quantityText= quantity.getText().toString().trim();
+        String lastDeliveryDateString= lastDeliveryDate.getText().toString().trim();
+        if(productNameText.isEmpty()){
             Snackbar.make(view,
-                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_name),
+                    getString(R.string.empty_field)+"\n"+getString(R.string.product_name),
                     Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(this,
-//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_name),
-//                    Toast.LENGTH_SHORT).show();
             return;
         }
-        if(serialNumberText.isEmpty()){
+        if(quantityText.isEmpty()){
             Snackbar.make(view,
-                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_serial_number),
+                    getString(R.string.empty_field)+"\n"+getString(R.string.product_quantity),
                     Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(this,
-//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_serial_number),
-//                    Toast.LENGTH_SHORT).show();
             return;
         }
-        if(nextInspectionDateString.isEmpty()){
+        if(lastDeliveryDateString.isEmpty()){
             Snackbar.make(view,
-                    getString(R.string.empty_field)+"\n"+getString(R.string.string_next_inspection_date),
+                    getString(R.string.empty_field)+"\n"+getString(R.string.product_last_delivery_date)
+                    +"\n"+getString(R.string.string_modification_date_set),
                     Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(this,
-//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_next_inspection_date),
-//                    Toast.LENGTH_SHORT).show();
             return;
         }
 
         dbProvider rp=new dbProvider();
 
         ContentValues cvs=new ContentValues();
-        cvs.put(COLUMN_EQUIPMENT_NAME, equipmentNameText);
-        cvs.put(COLUMN_SERIAL_NUMBER, serialNumberText);
-        cvs.put(COLUMN_NEXT_INSPECTION_DATE,nextInspectionDateString);
+//        cvs.put(COLUMN_EQUIPMENT_NAME, productNameText);
+//        cvs.put(COLUMN_SERIAL_NUMBER, quantityText);
+//        cvs.put(COLUMN_NEXT_INSPECTION_DATE,lastDeliveryDateString);
 
         if(intent.getData()==null){
             Uri newRowID = getContentResolver().insert(CONTENT_URI, cvs);
@@ -232,11 +238,9 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        return new CursorLoader(this,
-//                intent.getData(),
-//                PROJECTION,
-//                null,null,null);
-    return null;}
+        return new CursorLoader(this,
+                intent.getData(), PROJECTION,
+                null,null,null);}
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {

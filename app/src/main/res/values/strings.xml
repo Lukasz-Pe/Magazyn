@@ -32,4 +32,6 @@
     <string name="product_last_delivery_price">Unit price of last delivery</string>
     <string name="product_low_quantity_alert">Low quantity alert threshold</string>
     <string name="product_low_quantity_warning">Low quantity warning threshold</string>
+    <string name="product_last_delivery_date">Last delivery date</string>
+    <string name="string_modification_date_set">Setting today as modification date!</string>
 </resources>

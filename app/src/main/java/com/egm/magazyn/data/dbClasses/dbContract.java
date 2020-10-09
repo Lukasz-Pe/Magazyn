@@ -44,6 +44,22 @@ public final class dbContract {
         public final static String COL_LAST_DELIVERY_PRICE="last_delivery_price";
         public final static String COL_LAST_DELIVERY_DATE="last_delivery_date";
 
+        //Possible values of spinners
+        //Unit price
+        public static final int UNIT_PRICE_UNDEFINED = 0;
+        public static final int UNIT_PRICE_EUR_KG = 1;
+        public static final int UNIT_PRICE_EUR_PIECE =2;
+
+        //Low quantity Warnings/alerts:
+        public static final int LOW_QUANTITY_UNDEFINED=0;
+        public static final int LOW_QUANTITY_PERCENT=1;
+        public static final int LOW_QUANTITY_UNIT=2;
+
+        //Source:
+        public static final int SOURCE_UNDEFINED=0;
+        public static final int SOURCE_INTERNAL=1;
+        public static final int SOURCE_EXTERNAL=2;
+
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+ warehouseEntry.TABLE_NAME;
 

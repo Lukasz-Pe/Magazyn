@@ -79,7 +79,7 @@
                 android:inputType="number"
                 android:hint="@string/product_low_quantity_alert"/>
             <Spinner
-                android:id="@+id/product_choose_alert_unit"
+                android:id="@+id/product_choose_alarm_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/element_size"
                 android:spinnerMode="dropdown"/>
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
         <EditText
-            android:id="@+id/product_input_last_delivery_price"
+            android:id="@+id/product_input_last_delivery_unit_price"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -119,6 +119,13 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/last_delivery_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textAlignment="center"
+            android:text="@string/product_last_delivery_date"/>
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/warehouse_edit_menu_fab"
