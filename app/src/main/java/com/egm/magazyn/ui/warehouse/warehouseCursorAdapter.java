@@ -28,11 +28,13 @@ public class warehouseCursorAdapter extends CursorAdapter{
         TextView quantityInfo=(TextView) view.findViewById(R.id.product_quantity_info);
 
         double isQuantity=cursor.getDouble(cursor.getColumnIndexOrThrow(warehouseEntry.COL_QUANTITY));
-        double shouldBe=cursor.getDouble(cursor.getColumnIndexOrThrow(warehouseEntry.COL_LAST_DELIVERY_QUANTITY));
+        double shouldBe=cursor.getDouble(cursor.getColumnIndexOrThrow(warehouseEntry.COL_QUANTITY_AFTER_LAST_DELIVERY));
 
         productName.setText(cursor.getString(cursor.getColumnIndexOrThrow(warehouseEntry.COL_PRODUCT_NAME)));
-        quantityInfo.setText(Double.toString(isQuantity)+"/"+Double.toString(shouldBe));
+        quantityInfo.setText(Double.toString(isQuantity)+"/"+Double.toString(shouldBe) +"  "+ (int)(isQuantity/shouldBe)*100);
         ProgressBar prgsBar = (ProgressBar) view.findViewById(R.id.product_used);
-        prgsBar.setProgress((int)(isQuantity/shouldBe)*100,true);
+        prgsBar.setMax(100);
+        prgsBar.setMin(0);
+        prgsBar.setProgress((int)((isQuantity/shouldBe)*100),true);
     }
 }

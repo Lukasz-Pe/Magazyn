@@ -32,9 +32,18 @@ public class warehouseFragment extends Fragment implements LoaderManager.LoaderC
     private static final int WAREHOUSE_LOADER =0;
     static final String[] WAREHOUSE_PROJECTION =new String[]{
             _ID,
-            /*COL_PRODUCT_NAME,
+            COL_PRODUCT_NAME,
             COL_QUANTITY,
-            COL_QUANTITY_AFTER_LAST_DELIVERY*/
+            COL_ACCOUNTING_UNIT,
+            COL_UNIT_PRICE,
+            COL_QUANTITY_AFTER_LAST_DELIVERY,
+            COL_LOW_QUANTITY_WARNING,
+            COL_LOW_QUANTITY_WARNING_UNIT,
+            COL_LOW_QUANTITY_ALARM,
+            COL_LOW_QUANTITY_ALARM_UNIT,
+            COL_SOURCE,
+            COL_LAST_DELIVERY_PRICE,
+            COL_LAST_DELIVERY_DATE
     };
 
     private static final String ARG_PARAM1="param1";

@@ -281,11 +281,19 @@ public class dbProvider extends ContentProvider {
                 throw new IllegalArgumentException("Value <0!");
             }
         }
+        if(values.containsKey(dbContract.warehouseEntry.COL_QUANTITY_AFTER_LAST_DELIVERY)){
+            double quant_after_del = values.getAsDouble(dbContract.warehouseEntry.COL_QUANTITY_AFTER_LAST_DELIVERY);
+            double quantity = values.getAsDouble(dbContract.warehouseEntry.COL_QUANTITY);
+            if(quant_after_del<quantity){
+                throw new IllegalArgumentException("COL_QUANTITY_AFTER_LAST_DELIVERY < COL_QUANTITY!");
+            }
+        }
+
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         getContext().getContentResolver().notifyChange(uri,null);
 
-        return db.update(dbContract.remindersEntry.TABLE_NAME,values,selection,selectionArgs);
+        return db.update(dbContract.warehouseEntry.TABLE_NAME,values,selection,selectionArgs);
     }
 
 }

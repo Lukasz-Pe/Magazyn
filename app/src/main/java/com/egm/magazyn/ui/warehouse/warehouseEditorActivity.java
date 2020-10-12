@@ -47,8 +47,9 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
             _ID,
             COL_PRODUCT_NAME,
             COL_QUANTITY,
-            COL_UNIT_PRICE,
             COL_ACCOUNTING_UNIT,
+            COL_UNIT_PRICE,
+            COL_QUANTITY_AFTER_LAST_DELIVERY,
             COL_LOW_QUANTITY_WARNING,
             COL_LOW_QUANTITY_WARNING_UNIT,
             COL_LOW_QUANTITY_ALARM,
@@ -240,12 +241,12 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         dbProvider rp=new dbProvider();
 
         _oldQuantity +=Double.valueOf(quantityText);
-
+        double quant=_oldQuantity;//Double.valueOf(quantityText);
         ContentValues cvs=new ContentValues();
         cvs.put(COL_PRODUCT_NAME,productNameText);
-        cvs.put(COL_QUANTITY,Double.valueOf(quantityText));
+        cvs.put(COL_QUANTITY,quant);
         cvs.put(COL_LAST_DELIVERY_DATE,lastDeliveryDateString);
-        cvs.put(COL_LAST_DELIVERY_QUANTITY, _oldQuantity);
+        cvs.put(COL_QUANTITY_AFTER_LAST_DELIVERY, _oldQuantity);
         cvs.put(COL_ACCOUNTING_UNIT,_unitPriceAccountingUnitOption);
         cvs.put(COL_LOW_QUANTITY_WARNING_UNIT, _lowQuantityWarningUnitOption);
         cvs.put(COL_LOW_QUANTITY_ALARM_UNIT, _lowQuantityAlarmUnitOption);
@@ -261,22 +262,18 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
                         getString(R.string.row_saved_false),
                         Snackbar.LENGTH_LONG).show();
                 Toast.makeText(this, getString(R.string.row_saved_false), Toast.LENGTH_SHORT).show();
+                return;
             }else{
                 Snackbar.make(view,
                         getString(R.string.row_saved_true),
                         Snackbar.LENGTH_LONG).show();
                 Toast.makeText(this, getString(R.string.row_saved_true), Toast.LENGTH_SHORT).show();
-                operationSuccessful=true;
             }
         }else{
             int affectedRows=getContentResolver().update(intent.getData(), cvs,
                     TABLE_NAME, PROJECTION);
-            Snackbar.make(view,
-                        getString(R.string.rows_updated+affectedRows),
-                        Snackbar.LENGTH_LONG).show();
-            Toast.makeText(this, getString(R.string.rows_updated+affectedRows), Toast.LENGTH_SHORT).show();
-            operationSuccessful=true;
         }
+        operationSuccessful=true;
     }
 
     @NonNull
@@ -289,9 +286,13 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if(data.moveToFirst()){
-//            equipmentName.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_EQUIPMENT_NAME)));
-//            serialNumber.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_SERIAL_NUMBER)));
-//            nextInspectionDate.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_NEXT_INSPECTION_DATE)));
+            product.setText(data.getString(data.getColumnIndexOrThrow(COL_PRODUCT_NAME)));
+            quantity.setText(data.getString(data.getColumnIndexOrThrow(COL_QUANTITY)));
+            unitPrice.setText(data.getString(data.getColumnIndexOrThrow(COL_UNIT_PRICE)));
+            lowQuantityWarning.setText(data.getString(data.getColumnIndexOrThrow(COL_LOW_QUANTITY_WARNING)));
+            lowQuantityAlarm.setText(data.getString(data.getColumnIndexOrThrow(COL_LOW_QUANTITY_ALARM)));
+            lastDeliveryUnitPrice.setText(data.getString(data.getColumnIndexOrThrow(COL_LAST_DELIVERY_PRICE)));
+            lastDeliveryDate.setText(data.getString(data.getColumnIndexOrThrow(COL_LAST_DELIVERY_DATE)));
             _oldQuantity = data.getDouble(data.getColumnIndexOrThrow(COL_QUANTITY));
             int accountingUnit = data.getInt(data.getColumnIndexOrThrow(COL_ACCOUNTING_UNIT));
             int lowQuantWarn = data.getInt(data.getColumnIndexOrThrow(COL_LOW_QUANTITY_WARNING_UNIT));
@@ -329,9 +330,13 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-//        equipmentName.setText("");
-//        serialNumber.setText("");
-//        nextInspectionDate.setText(getString(R.string.string_next_inspection_date));
+        product.setText("");
+        quantity.setText("");
+        unitPrice.setText("");
+        lowQuantityWarning.setText("");
+        lowQuantityAlarm.setText("");
+        lastDeliveryUnitPrice.setText("");
+        lastDeliveryDate.setText(getString(R.string.product_last_delivery_date));
     }
 
     private void prepare_spinners(){

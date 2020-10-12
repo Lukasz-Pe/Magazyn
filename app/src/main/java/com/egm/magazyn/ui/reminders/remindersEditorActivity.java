@@ -44,7 +44,7 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
     private Intent intent;
 
     private static final int EXISTING_EQUIPMENT_LOADER=0;
-    private boolean hasChanged=false;
+    private boolean hasChanged=false, operationSuccessful=false;
 
     private FloatingActionButton menuFAB, close, save, delete, cancel;
     private DatePickerDialog picker;
@@ -89,7 +89,8 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
             @Override
             public void onClick(View view) {
                 getContentResolver().delete(intent.getData(),TABLE_NAME, PROJECTION);
-                finish();
+                if(operationSuccessful)
+                    finish();
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +98,8 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
             public void onClick(View view   ) {
                 saveData(view);
                 closeMenu();
-                finish();
+                if(operationSuccessful)
+                    finish();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -169,27 +171,18 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
             Snackbar.make(view,
                     getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_name),
                     Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(this,
-//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_name),
-//                    Toast.LENGTH_SHORT).show();
             return;
         }
         if(serialNumberText.isEmpty()){
             Snackbar.make(view,
                     getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_serial_number),
                     Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(this,
-//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_serial_number),
-//                    Toast.LENGTH_SHORT).show();
             return;
         }
         if(nextInspectionDateString.isEmpty()){
             Snackbar.make(view,
                     getString(R.string.empty_field)+"\n"+getString(R.string.string_next_inspection_date),
                     Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(this,
-//                    getString(R.string.empty_field)+"\n"+getString(R.string.string_next_inspection_date),
-//                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -206,12 +199,11 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
                 Snackbar.make(view,
                         getString(R.string.row_saved_false),
                         Snackbar.LENGTH_LONG).show();
-//                Toast.makeText(this, getString(R.string.row_saved_false), Toast.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(view,
                         getString(R.string.row_saved_true),
                         Snackbar.LENGTH_LONG).show();
-//                Toast.makeText(this, getString(R.string.row_saved_true), Toast.LENGTH_SHORT).show();
+                operationSuccessful=true;
             }
         }else{
             int affectedRows=getContentResolver().update(intent.getData(), cvs,
@@ -219,7 +211,7 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
             Snackbar.make(view,
                         getString(R.string.rows_updated+affectedRows),
                         Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(this, getString(R.string.rows_updated+affectedRows), Toast.LENGTH_SHORT).show();
+            operationSuccessful=true;
         }
     }
 

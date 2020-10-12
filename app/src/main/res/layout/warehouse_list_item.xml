@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/list_item_horizontal_margin"
     android:orientation="vertical">
     <TextView
         android:id="@+id/product_name"
@@ -20,7 +21,8 @@
         android:id="@+id/product_used"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:scaleY="5"
-        android:indeterminate="true"
+        android:indeterminate="false"
+        android:min="0"
         android:max="100"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_size"

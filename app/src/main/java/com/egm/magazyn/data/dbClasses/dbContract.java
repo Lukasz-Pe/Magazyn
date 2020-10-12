@@ -32,7 +32,6 @@ public final class dbContract {
         public final static String _ID=BaseColumns._ID;
         public final static String COL_PRODUCT_NAME="name";
         public final static String COL_QUANTITY="quantity";
-        public final static String COL_LAST_DELIVERY_QUANTITY="last_delivery_quantity";
         public final static String COL_QUANTITY_AFTER_LAST_DELIVERY ="quantity_after_last_delivery";
         public final static String COL_UNIT_PRICE="unit_price";
         public final static String COL_ACCOUNTING_UNIT="unit_of_account";
