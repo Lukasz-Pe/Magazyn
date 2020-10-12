@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,7 +26,9 @@ import com.egm.magazyn.data.dbClasses.dbProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.Calendar;
+
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import static com.egm.magazyn.data.dbClasses.dbContract.warehouseEntry.*;
 
@@ -33,6 +39,9 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
     private EditText product, quantity, unitPrice, lowQuantityWarning, lowQuantityAlarm, lastDeliveryUnitPrice;
     private Spinner unitPriceAccountingUnit, lowQuantityWarningUnit, lowQuantityAlarmUnit, source;
     private TextView lastDeliveryDate;
+
+    private int _unitPriceAccountingUnitOption, _lowQuantityWarningUnitOption, _lowQuantityAlarmUnitOption, _sourceOption;
+    private double _oldQuantity;
 
     private static final String[] PROJECTION=new String[]{
             _ID,
@@ -52,7 +61,7 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
     private Intent intent;
 
     private static final int EXISTING_EQUIPMENT_LOADER=0;
-    private boolean hasChanged=false;
+    private boolean hasChanged=false, operationSuccessful=false;
 
     private FloatingActionButton menuFAB, close, save, delete, cancel;
     private DatePickerDialog picker;
@@ -77,10 +86,17 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         lowQuantityAlarm = (EditText) findViewById(R.id.product_input_low_quantity_alert);
         lastDeliveryUnitPrice = (EditText) findViewById(R.id.product_input_last_delivery_unit_price);
 
-//        unitPriceAccountingUnit = (Spinner) findViewById(R.id.product_choose_unit_of_account);
-//        lowQuantityWarningUnit = (Spinner) findViewById(R.id.product_choose_warning_unit);
-//        lowQuantityAlarmUnit = (Spinner) findViewById(R.id.product_choose_alarm_unit);
-//        source = (Spinner) findViewById(R.id.product_choose_origin);
+        unitPriceAccountingUnit = (Spinner) findViewById(R.id.product_choose_unit_of_account);
+        lowQuantityWarningUnit = (Spinner) findViewById(R.id.product_choose_warning_unit);
+        lowQuantityAlarmUnit = (Spinner) findViewById(R.id.product_choose_alarm_unit);
+        source = (Spinner) findViewById(R.id.product_choose_origin);
+
+        unitPriceAccountingUnit.setOnTouchListener(onTouchListener);
+        lowQuantityWarningUnit.setOnTouchListener(onTouchListener);
+        lowQuantityAlarmUnit.setOnTouchListener(onTouchListener);
+        source.setOnTouchListener(onTouchListener);
+
+        prepare_spinners();
 
         lastDeliveryDate = (TextView) findViewById(R.id.last_delivery_date);
 
@@ -109,7 +125,8 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
             @Override
             public void onClick(View view) {
                 getContentResolver().delete(intent.getData(),TABLE_NAME, PROJECTION);
-                finish();
+                if(operationSuccessful)
+                    finish();
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +134,8 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
             public void onClick(View view) {
                 saveData(view);
                 closeMenu();
-                finish();
+                if(operationSuccessful)
+                    finish();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -185,6 +203,7 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         String productNameText= product.getText().toString().trim();
         String quantityText= quantity.getText().toString().trim();
         String lastDeliveryDateString= lastDeliveryDate.getText().toString().trim();
+        double unitPriceVal = Double.valueOf(unitPrice.getText().toString().trim());
         if(productNameText.isEmpty()){
             Snackbar.make(view,
                     getString(R.string.empty_field)+"\n"+getString(R.string.product_name),
@@ -197,20 +216,43 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
                     Snackbar.LENGTH_LONG).show();
             return;
         }
-        if(lastDeliveryDateString.isEmpty()){
+        if(lastDeliveryDateString.isEmpty()||lastDeliveryDateString==getString(R.string.product_last_delivery_date)){
             Snackbar.make(view,
                     getString(R.string.empty_field)+"\n"+getString(R.string.product_last_delivery_date)
                     +"\n"+getString(R.string.string_modification_date_set),
                     Snackbar.LENGTH_LONG).show();
+            Calendar cldr = Calendar.getInstance();
+            int day = cldr.get(Calendar.DAY_OF_MONTH);
+            int month = cldr.get(Calendar.MONTH);
+            int year = cldr.get(Calendar.YEAR);
+            lastDeliveryDateString = String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day);
+            return;
+        }
+        if(unitPriceVal<0){
+            Snackbar.make(view,
+                    getString(R.string.product_unit_price)+"\n"
+                    +getString(R.string.wrong_value)+0,
+                    Snackbar.LENGTH_LONG).show();
             return;
         }
 
+
         dbProvider rp=new dbProvider();
 
+        _oldQuantity +=Double.valueOf(quantityText);
+
         ContentValues cvs=new ContentValues();
-//        cvs.put(COLUMN_EQUIPMENT_NAME, productNameText);
-//        cvs.put(COLUMN_SERIAL_NUMBER, quantityText);
-//        cvs.put(COLUMN_NEXT_INSPECTION_DATE,lastDeliveryDateString);
+        cvs.put(COL_PRODUCT_NAME,productNameText);
+        cvs.put(COL_QUANTITY,Double.valueOf(quantityText));
+        cvs.put(COL_LAST_DELIVERY_DATE,lastDeliveryDateString);
+        cvs.put(COL_LAST_DELIVERY_QUANTITY, _oldQuantity);
+        cvs.put(COL_ACCOUNTING_UNIT,_unitPriceAccountingUnitOption);
+        cvs.put(COL_LOW_QUANTITY_WARNING_UNIT, _lowQuantityWarningUnitOption);
+        cvs.put(COL_LOW_QUANTITY_ALARM_UNIT, _lowQuantityAlarmUnitOption);
+        cvs.put(COL_SOURCE,_sourceOption);
+        cvs.put(COL_UNIT_PRICE, unitPriceVal);
+
+        Log.e(">>>>>>>>>>>>>>>>cvs",cvs.toString());
 
         if(intent.getData()==null){
             Uri newRowID = getContentResolver().insert(CONTENT_URI, cvs);
@@ -218,12 +260,13 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
                 Snackbar.make(view,
                         getString(R.string.row_saved_false),
                         Snackbar.LENGTH_LONG).show();
-//                Toast.makeText(this, getString(R.string.row_saved_false), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.row_saved_false), Toast.LENGTH_SHORT).show();
             }else{
                 Snackbar.make(view,
                         getString(R.string.row_saved_true),
                         Snackbar.LENGTH_LONG).show();
-//                Toast.makeText(this, getString(R.string.row_saved_true), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.row_saved_true), Toast.LENGTH_SHORT).show();
+                operationSuccessful=true;
             }
         }else{
             int affectedRows=getContentResolver().update(intent.getData(), cvs,
@@ -231,7 +274,8 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
             Snackbar.make(view,
                         getString(R.string.rows_updated+affectedRows),
                         Snackbar.LENGTH_LONG).show();
-//            Toast.makeText(this, getString(R.string.rows_updated+affectedRows), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.rows_updated+affectedRows), Toast.LENGTH_SHORT).show();
+            operationSuccessful=true;
         }
     }
 
@@ -248,6 +292,31 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
 //            equipmentName.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_EQUIPMENT_NAME)));
 //            serialNumber.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_SERIAL_NUMBER)));
 //            nextInspectionDate.setText(data.getString(data.getColumnIndexOrThrow(COLUMN_NEXT_INSPECTION_DATE)));
+            _oldQuantity = data.getDouble(data.getColumnIndexOrThrow(COL_QUANTITY));
+            int accountingUnit = data.getInt(data.getColumnIndexOrThrow(COL_ACCOUNTING_UNIT));
+            int lowQuantWarn = data.getInt(data.getColumnIndexOrThrow(COL_LOW_QUANTITY_WARNING_UNIT));
+            int lowQuantAlarm = data.getInt(data.getColumnIndexOrThrow(COL_LOW_QUANTITY_ALARM_UNIT));
+            int sourceVal = data.getInt(data.getColumnIndexOrThrow(COL_SOURCE));
+            if(validUnitPrice(accountingUnit)){
+                unitPriceAccountingUnit.setSelection(accountingUnit);
+            }else{
+                unitPriceAccountingUnit.setSelection(0);
+            }
+            if(validUnitPrice(lowQuantWarn)){
+                lowQuantityWarningUnit.setSelection(accountingUnit);
+            }else{
+                lowQuantityWarningUnit.setSelection(0);
+            }
+            if(validUnitPrice(lowQuantAlarm)){
+                lowQuantityAlarmUnit.setSelection(accountingUnit);
+            }else{
+                lowQuantityAlarmUnit.setSelection(0);
+            }
+            if(validUnitPrice(sourceVal)){
+                source.setSelection(accountingUnit);
+            }else{
+                source.setSelection(0);
+            }
         }
     }
     View.OnTouchListener onTouchListener=new View.OnTouchListener(){
@@ -264,4 +333,107 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
 //        serialNumber.setText("");
 //        nextInspectionDate.setText(getString(R.string.string_next_inspection_date));
     }
+
+    private void prepare_spinners(){
+        ArrayAdapter accountingUnitSpinnerAdapter, lowQuantitySpinnersAdapter, sourceSpinnerAdapter;
+        accountingUnitSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.product_accounting_unit_options, android.R.layout.simple_spinner_item);
+        lowQuantitySpinnersAdapter = ArrayAdapter.createFromResource(this, R.array.product_low_quantity_options, android.R.layout.simple_spinner_item);
+        sourceSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.product_source_options, android.R.layout.simple_spinner_item);
+
+        accountingUnitSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        lowQuantitySpinnersAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        sourceSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+        unitPriceAccountingUnit.setAdapter(accountingUnitSpinnerAdapter);
+        lowQuantityWarningUnit.setAdapter(lowQuantitySpinnersAdapter);
+        lowQuantityAlarmUnit.setAdapter(lowQuantitySpinnersAdapter);
+        source.setAdapter(sourceSpinnerAdapter);
+
+        unitPriceAccountingUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if(!TextUtils.isEmpty(selection)){
+                    if(selection.equals(getString(R.string.product_option_undefined))){
+                        _unitPriceAccountingUnitOption = OPTION_UNDEFINED;
+                    }
+                    if(selection.equals(getString(R.string.product_unit_mass))){
+                        _unitPriceAccountingUnitOption = UNIT_PRICE_EUR_KG;
+                    }
+                    if(selection.equals(getString(R.string.product_unit_piece))){
+                        _unitPriceAccountingUnitOption = UNIT_PRICE_EUR_PIECE;
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                _unitPriceAccountingUnitOption = OPTION_UNDEFINED;
+            }
+        });
+        lowQuantityWarningUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if(!TextUtils.isEmpty(selection)){
+                    if(selection.equals(getString(R.string.product_option_undefined))){
+                        _lowQuantityWarningUnitOption = OPTION_UNDEFINED;
+                    }
+                    if(selection.equals(getString(R.string.product_low_quantity_unit_percent))){
+                        _lowQuantityWarningUnitOption = LOW_QUANTITY_PERCENT;
+                    }
+                    if(selection.equals(getString(R.string.product_low_quantity_unit_as_accounting))){
+                        _lowQuantityWarningUnitOption = LOW_QUANTITY_UNIT;
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                _lowQuantityWarningUnitOption = OPTION_UNDEFINED;
+            }
+        });
+        lowQuantityAlarmUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if(!TextUtils.isEmpty(selection)){
+                    if(selection.equals(getString(R.string.product_option_undefined))){
+                        _lowQuantityAlarmUnitOption = OPTION_UNDEFINED;
+                    }
+                    if(selection.equals(getString(R.string.product_low_quantity_unit_percent))){
+                        _lowQuantityAlarmUnitOption = LOW_QUANTITY_PERCENT;
+                    }
+                    if(selection.equals(getString(R.string.product_low_quantity_unit_as_accounting))){
+                        _lowQuantityAlarmUnitOption = LOW_QUANTITY_UNIT;
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                _lowQuantityAlarmUnitOption = OPTION_UNDEFINED;
+            }
+        });
+        source.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if(!TextUtils.isEmpty(selection)){
+                    if(selection.equals(getString(R.string.product_option_undefined))){
+                        _sourceOption = OPTION_UNDEFINED;
+                    }
+                    if(selection.equals(getString(R.string.product_source_own))){
+                        _sourceOption = SOURCE_INTERNAL;
+                    }
+                    if(selection.equals(getString(R.string.product_source_external))){
+                        _sourceOption = SOURCE_EXTERNAL;
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                _sourceOption = OPTION_UNDEFINED;
+            }
+        });
+
+    }
+
 }

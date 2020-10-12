@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="product_accounting_unit_options">
+        <item>@string/product_option_undefined</item>
+        <item>@string/product_unit_mass</item>
+        <item>@string/product_unit_piece</item>
+    </string-array>
+    <string-array name="product_low_quantity_options">
+        <item>@string/product_option_undefined</item>
+        <item>@string/product_low_quantity_unit_percent</item>
+        <item>@string/product_low_quantity_unit_as_accounting</item>
+    </string-array>
+    <string-array name="product_source_options">
+        <item>@string/product_option_undefined</item>
+        <item>@string/product_source_own</item>
+        <item>@string/product_source_external</item>
+    </string-array>
+
+</resources>

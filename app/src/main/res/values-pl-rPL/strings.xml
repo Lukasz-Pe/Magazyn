@@ -33,5 +33,13 @@
     <string name="product_low_quantity_alert">Alarm o małej ilości towaru</string>
     <string name="product_low_quantity_warning">Ostrzeżenie o małej ilości towaru</string>
     <string name="product_last_delivery_date">Data ostatniej dostawy</string>
-    <string name="string_modification_date_set">Ustawiam dziś jako datę modyfikacji!</string>
+    <string name="string_modification_date_set">Ustawiam dziś jako datę dostawy!</string>
+    <string name="product_option_undefined">Nieustawione</string>
+    <string name="product_unit_mass">€/kg</string>
+    <string name="product_unit_piece">€/sztuka</string>
+    <string name="product_low_quantity_unit_percent">%</string>
+    <string name="product_low_quantity_unit_as_accounting">Jak produkt</string>
+    <string name="product_source_external">Zewnętrzny</string>
+    <string name="product_source_own">Własne</string>
+    <string name="wrong_value">"Wartość tego pola nie może być mniejsza niż: "</string>
 </resources>

@@ -45,20 +45,41 @@ public final class dbContract {
         public final static String COL_LAST_DELIVERY_DATE="last_delivery_date";
 
         //Possible values of spinners
+        //Overall
+        public static final int OPTION_UNDEFINED = 0;
+
         //Unit price
-        public static final int UNIT_PRICE_UNDEFINED = 0;
         public static final int UNIT_PRICE_EUR_KG = 1;
         public static final int UNIT_PRICE_EUR_PIECE =2;
 
+        public static boolean validUnitPrice(int value){
+            if(value==OPTION_UNDEFINED||value==UNIT_PRICE_EUR_KG||value==UNIT_PRICE_EUR_PIECE){
+                return true;
+            }
+            return false;
+        }
+
         //Low quantity Warnings/alerts:
-        public static final int LOW_QUANTITY_UNDEFINED=0;
         public static final int LOW_QUANTITY_PERCENT=1;
         public static final int LOW_QUANTITY_UNIT=2;
 
+        public static boolean validLowQuantity(int value){
+            if(value==OPTION_UNDEFINED||value==LOW_QUANTITY_PERCENT||value==LOW_QUANTITY_UNIT){
+                return true;
+            }
+            return false;
+        }
+
         //Source:
-        public static final int SOURCE_UNDEFINED=0;
         public static final int SOURCE_INTERNAL=1;
         public static final int SOURCE_EXTERNAL=2;
+
+        public static boolean validSource(int value){
+            if(value==OPTION_UNDEFINED||value==SOURCE_INTERNAL||value==SOURCE_EXTERNAL){
+                return true;
+            }
+            return false;
+        }
 
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+ warehouseEntry.TABLE_NAME;

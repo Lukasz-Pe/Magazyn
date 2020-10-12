@@ -122,7 +122,7 @@ public class dbProvider extends ContentProvider {
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
         switch(sUriMatcher.match(uri)){
             case REMINDERS_TABLE:{
-                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
                 String name = contentValues.getAsString(dbContract.remindersEntry.COLUMN_EQUIPMENT_NAME);
                 String date = contentValues.getAsString(dbContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE);
                 if (name == null) {
@@ -140,24 +140,25 @@ public class dbProvider extends ContentProvider {
                 return ContentUris.withAppendedId(uri, id);
             }
             case WAREHOUSE_TABLE:{
-                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
                 String name = contentValues.getAsString(dbContract.warehouseEntry.COL_PRODUCT_NAME);
                 double quantity = contentValues.getAsDouble(dbContract.warehouseEntry.COL_QUANTITY);
                 int accounting_unit = contentValues.getAsInteger(dbContract.warehouseEntry.COL_ACCOUNTING_UNIT);
                 double unit_price = contentValues.getAsDouble(dbContract.warehouseEntry.COL_UNIT_PRICE);
-                double qutantity_after_last_delivery = contentValues.getAsDouble(dbContract.warehouseEntry.COL_QUANTITY_AFTER_LAST_DELIVERY);
+                double quantity_after_last_delivery = 14.5;//contentValues.getAsDouble(dbContract.warehouseEntry.COL_QUANTITY_AFTER_LAST_DELIVERY);
                 if (name == null) {
                     throw new IllegalArgumentException("Name is required field!");
                 }
                 if(quantity<0||unit_price<0){
                     throw new IllegalArgumentException("Parameter has to be >0!");
                 }
-                if(accounting_unit!=0||accounting_unit!=1){
+                if(!dbContract.warehouseEntry.validUnitPrice(accounting_unit)){
+                    Log.w("accounting_unit",String.valueOf(accounting_unit));
                     throw new IllegalArgumentException("Illegal value!");
                 }
-                if(qutantity_after_last_delivery>quantity){
-                    throw new IllegalArgumentException("Parameter has to be greater than available quantity!");
-                }
+//                if(quantity_after_last_delivery>quantity){
+//                    throw new IllegalArgumentException("Parameter has to be greater than available quantity!");
+//                }
                 getContext().getContentResolver().notifyChange(uri, null);
                 long id = db.insert(dbContract.warehouseEntry.TABLE_NAME, null, contentValues);
                 if(id<0){

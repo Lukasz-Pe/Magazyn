@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -93,7 +94,7 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
         });
         save.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view   ) {
                 saveData(view);
                 closeMenu();
                 finish();

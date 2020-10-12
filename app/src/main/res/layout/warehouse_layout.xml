@@ -6,16 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.reminders.remindersFragment">
 
-    <RelativeLayout
-        android:id="@+id/empty_view"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/empty_tank"/>
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/empty_view"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty_tank"/>
+        </RelativeLayout>
 
     <ListView
         android:id="@+id/warehouse_list_view"

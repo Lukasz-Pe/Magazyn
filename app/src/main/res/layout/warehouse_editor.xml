@@ -22,7 +22,7 @@
             android:id="@+id/product_input_quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:hint="@string/product_quantity"
             android:textSize="@dimen/text_size"/>
         <LinearLayout
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/product_unit_price"
-                android:inputType="number"/>
+                android:inputType="numberDecimal"/>
             <Spinner
                 android:id="@+id/product_choose_unit_of_account"
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:hint="@string/product_low_quantity_warning"/>
             <Spinner
                 android:id="@+id/product_choose_warning_unit"
@@ -76,7 +76,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:hint="@string/product_low_quantity_alert"/>
             <Spinner
                 android:id="@+id/product_choose_alarm_unit"
@@ -110,7 +110,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textAlignment="textEnd"
             android:hint="@string/product_last_delivery_price"/>
         <TextView

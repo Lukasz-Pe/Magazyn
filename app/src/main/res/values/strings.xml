@@ -19,7 +19,7 @@
     <string name="string_equipment_name">Equipment name</string>
     <string name="empty_field">This field cannot be empty!</string>
     <string name="row_saved_true">Row successfully updated!</string>
-    <string name="row_saved_false">Error occure when saving row</string>
+    <string name="row_saved_false">Save error!</string>
     <string name="rows_updated">"Updated rows: "</string>
     <string name="add_position">Add</string>
     <string name="edit_position">Edit</string>
@@ -33,5 +33,13 @@
     <string name="product_low_quantity_alert">Low quantity alert threshold</string>
     <string name="product_low_quantity_warning">Low quantity warning threshold</string>
     <string name="product_last_delivery_date">Last delivery date</string>
-    <string name="string_modification_date_set">Setting today as modification date!</string>
+    <string name="string_modification_date_set">Setting today as delivery date!</string>
+    <string name="product_option_undefined">Undefined</string>
+    <string name="product_unit_mass">€/kg</string>
+    <string name="product_unit_piece">€/piece</string>
+    <string name="product_low_quantity_unit_percent">%</string>
+    <string name="product_low_quantity_unit_as_accounting">As product</string>
+    <string name="product_source_external">External</string>
+    <string name="product_source_own">Own</string>
+    <string name="wrong_value">Value of this field can not be smaller than</string>
 </resources>
