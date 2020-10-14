@@ -1,7 +1,9 @@
 package com.egm.magazyn.ui.warehouse;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
@@ -92,6 +95,12 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         lowQuantityAlarmUnit = (Spinner) findViewById(R.id.product_choose_alarm_unit);
         source = (Spinner) findViewById(R.id.product_choose_origin);
 
+        product.setOnTouchListener(onTouchListener);
+        quantity.setOnTouchListener(onTouchListener);
+        unitPrice.setOnTouchListener(onTouchListener);
+        lowQuantityWarning.setOnTouchListener(onTouchListener);
+        lowQuantityAlarm.setOnTouchListener(onTouchListener);
+        lastDeliveryUnitPrice.setOnTouchListener(onTouchListener);
         unitPriceAccountingUnit.setOnTouchListener(onTouchListener);
         lowQuantityWarningUnit.setOnTouchListener(onTouchListener);
         lowQuantityAlarmUnit.setOnTouchListener(onTouchListener);
@@ -125,9 +134,13 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getContentResolver().delete(intent.getData(),TABLE_NAME, PROJECTION);
-                if(operationSuccessful)
-                    finish();
+                DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        delete();
+                    }
+                };
+                deleteDialog(discardButtonClickListener);
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +155,16 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                if(!hasChanged) {
+                    finish();
+                }
+                DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        NavUtils.navigateUpFromSameTask(warehouseEditorActivity.this);
+                    }
+                };
+                unsavedChangesDialog(discardButtonClickListener);
             }
         });
         lastDeliveryDate.setOnClickListener(new View.OnClickListener() {
@@ -253,8 +275,6 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         cvs.put(COL_SOURCE,_sourceOption);
         cvs.put(COL_UNIT_PRICE, unitPriceVal);
 
-        Log.e(">>>>>>>>>>>>>>>>cvs",cvs.toString());
-
         if(intent.getData()==null){
             Uri newRowID = getContentResolver().insert(CONTENT_URI, cvs);
             if(newRowID==null){
@@ -276,6 +296,42 @@ public class warehouseEditorActivity extends AppCompatActivity implements Loader
         operationSuccessful=true;
     }
 
+    private void deleteDialog(DialogInterface.OnClickListener discardButtonClickListener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.question_delete);
+        builder.setPositiveButton(R.string.question_btn_yes, discardButtonClickListener);
+        builder.setNegativeButton(R.string.question_btn_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(dialog!=null){
+                    dialog.dismiss();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void delete(){
+        getContentResolver().delete(intent.getData(),TABLE_NAME, PROJECTION);
+        finish();
+    }
+
+    private void unsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.question_unsaved_changes);
+        builder.setPositiveButton(R.string.question_btn_yes, discardButtonClickListener);
+        builder.setNegativeButton(R.string.question_btn_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(dialog!=null){
+                    dialog.dismiss();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {

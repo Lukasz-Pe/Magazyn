@@ -42,4 +42,8 @@
     <string name="product_source_external">External</string>
     <string name="product_source_own">Own</string>
     <string name="wrong_value">Value of this field can not be smaller than</string>
+    <string name="question_delete">Are you sure you want to delete this entry?</string>
+    <string name="question_unsaved_changes">There are unsaved changes.\nDo you really want to cancel all changes?</string>
+    <string name="question_btn_yes">Yes</string>
+    <string name="question_btn_no">No</string>
 </resources>

@@ -42,4 +42,8 @@
     <string name="product_source_external">Zewnętrzny</string>
     <string name="product_source_own">Własne</string>
     <string name="wrong_value">"Wartość tego pola nie może być mniejsza niż: "</string>
+    <string name="question_delete">Czy na pewno chcesz usunąć ten wpis?</string>
+    <string name="question_unsaved_changes">Są niezapisane zmiany.\nCzy na pewno chcesz je anulować?</string>
+    <string name="question_btn_yes">Tak</string>
+    <string name="question_btn_no">Nie</string>
 </resources>
