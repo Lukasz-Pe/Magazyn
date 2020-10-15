@@ -46,4 +46,9 @@
     <string name="question_unsaved_changes">Są niezapisane zmiany.\nCzy na pewno chcesz je anulować?</string>
     <string name="question_btn_yes">Tak</string>
     <string name="question_btn_no">Nie</string>
+    <string name="client_names">Imiona</string>
+    <string name="client_surname">Nazwiska</string>
+    <string name="client_payment_method">Metoda platności</string>
+    <string name="client_notes">Notatki</string>
+    <string name="client_adress">Adres klienta</string>
 </resources>

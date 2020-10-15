@@ -46,4 +46,9 @@
     <string name="question_unsaved_changes">There are unsaved changes.\nDo you really want to cancel all changes?</string>
     <string name="question_btn_yes">Yes</string>
     <string name="question_btn_no">No</string>
+    <string name="client_names">Names</string>
+    <string name="client_surname">Surname</string>
+    <string name="client_payment_method">Payment method</string>
+    <string name="client_notes">Notes</string>
+    <string name="client_adress">Clients\' adress</string>
 </resources>
