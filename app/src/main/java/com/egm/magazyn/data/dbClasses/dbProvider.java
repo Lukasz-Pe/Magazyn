@@ -19,7 +19,8 @@ public class dbProvider extends ContentProvider {
     //IDs for UriMatcher
     private static final int
             REMINDERS_TABLE =100, REMINDER_ITEM =101,
-            WAREHOUSE_TABLE=102, WAREHOUSE_ITEM=103;
+            WAREHOUSE_TABLE=102, WAREHOUSE_ITEM=103,
+            CLIENTS_TABLE=104, CLIENTS_ITEM=105;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     //Database and provider helper objects
@@ -28,6 +29,8 @@ public class dbProvider extends ContentProvider {
         sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.remindersEntry.TABLE_NAME+"/#", REMINDER_ITEM);
         sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.warehouseEntry.TABLE_NAME, WAREHOUSE_TABLE);
         sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.warehouseEntry.TABLE_NAME+"/#", WAREHOUSE_ITEM);
+        sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.clientsEntry.TABLE_NAME, CLIENTS_TABLE);
+        sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.clientsEntry.TABLE_NAME+"/#", CLIENTS_ITEM);
     }
 
     @Override
@@ -86,6 +89,26 @@ public class dbProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
+            case CLIENTS_TABLE:{
+                cursor=db.query(dbContract.clientsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null, null,
+                        sortOrder);
+                break;
+            }
+            case CLIENTS_ITEM:{
+                selection= dbContract.clientsEntry._ID+"=?";
+                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
+                cursor=db.query(dbContract.clientsEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null, null,
+                        sortOrder);
+                break;
+            }
             default:{
                 throw new IllegalArgumentException("Unable to query unknown URI: " + uri);
             }
@@ -111,6 +134,12 @@ public class dbProvider extends ContentProvider {
             case WAREHOUSE_ITEM:{
                 return dbContract.warehouseEntry.CONTENT_ITEM_TYPE;
             }
+            case CLIENTS_TABLE:{
+                return dbContract.clientsEntry.CONTENT_LIST_TYPE;
+            }
+            case CLIENTS_ITEM:{
+                return dbContract.clientsEntry.CONTENT_ITEM_TYPE;
+            }
             default:{
                 throw new IllegalArgumentException("Unknown URI " + uri + " with match " + match);
             }
@@ -123,8 +152,8 @@ public class dbProvider extends ContentProvider {
         switch(sUriMatcher.match(uri)){
             case REMINDERS_TABLE:{
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-                String name = contentValues.getAsString(dbContract.remindersEntry.COLUMN_EQUIPMENT_NAME);
-                String date = contentValues.getAsString(dbContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE);
+                String name = contentValues.getAsString(dbContract.remindersEntry.COL_EQUIPMENT_NAME);
+                String date = contentValues.getAsString(dbContract.remindersEntry.COL_NEXT_INSPECTION_DATE);
                 if (name == null) {
                     throw new IllegalArgumentException("Name is required field!");
                 }
@@ -167,6 +196,32 @@ public class dbProvider extends ContentProvider {
                 }
                 return ContentUris.withAppendedId(uri, id);
             }
+            case CLIENTS_TABLE:{
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                String names = contentValues.getAsString(dbContract.clientsEntry.COL_NAMES);
+                String surname = contentValues.getAsString(dbContract.clientsEntry.COL_SURNAME);
+                String phoneNumber = contentValues.getAsString(dbContract.clientsEntry.COL_PHONE_NUMBER);
+                String adress = contentValues.getAsString(dbContract.clientsEntry.COL_ADRESS);
+                if (names == null) {
+                    throw new IllegalArgumentException("Names is required field!");
+                }
+                if(surname==null){
+                    throw new IllegalArgumentException("Surnames is required field!");
+                }
+                if(phoneNumber==null){
+                    throw new IllegalArgumentException("Phone number is required field!");
+                }
+                if(adress==null){
+                    throw new IllegalArgumentException("Adress is required field!");
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                long id = db.insert(dbContract.clientsEntry.TABLE_NAME, null, contentValues);
+                if(id<0){
+                    Log.e(LOG_TAG, "Failed to insert row for " + uri);
+                    return null;
+                }
+                return ContentUris.withAppendedId(uri, id);
+            }
             default:{
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
             }
@@ -196,6 +251,16 @@ public class dbProvider extends ContentProvider {
                 selection= dbContract.warehouseEntry._ID+"=?";
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted=db.delete(dbContract.warehouseEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            }
+            case CLIENTS_TABLE:{
+                rowsDeleted=db.delete(dbContract.clientsEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            }
+            case CLIENTS_ITEM:{
+                selection= dbContract.clientsEntry._ID+"=?";
+                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted=db.delete(dbContract.clientsEntry.TABLE_NAME,selection,selectionArgs);
                 break;
             }
             default:{
@@ -230,6 +295,14 @@ public class dbProvider extends ContentProvider {
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateWarehouse(uri,contentValues, selection, selectionArgs);
             }
+            case CLIENTS_TABLE:{
+                return updateClients(uri,contentValues, selection, selectionArgs);
+            }
+            case CLIENTS_ITEM:{
+                selection= dbContract.clientsEntry._ID+"=?";
+                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return updateClients(uri,contentValues, selection, selectionArgs);
+            }
             default:{
                 throw new IllegalArgumentException("Unable to update unknown URI: " + uri);
             }
@@ -237,14 +310,14 @@ public class dbProvider extends ContentProvider {
     }
 
     private int updateReminder(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if(values.containsKey(dbContract.remindersEntry.COLUMN_EQUIPMENT_NAME)){
-            String name = values.getAsString(dbContract.remindersEntry.COLUMN_EQUIPMENT_NAME);
+        if(values.containsKey(dbContract.remindersEntry.COL_EQUIPMENT_NAME)){
+            String name = values.getAsString(dbContract.remindersEntry.COL_EQUIPMENT_NAME);
             if(name==null){
                 throw new IllegalArgumentException("Name is required field!");
             }
         }
-        if(values.containsKey(dbContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE)){
-            String date = values.getAsString(dbContract.remindersEntry.COLUMN_NEXT_INSPECTION_DATE);
+        if(values.containsKey(dbContract.remindersEntry.COL_NEXT_INSPECTION_DATE)){
+            String date = values.getAsString(dbContract.remindersEntry.COL_NEXT_INSPECTION_DATE);
             if(date==null){
                 throw new IllegalArgumentException("Next inspection date is required field!");
             }
@@ -294,6 +367,38 @@ public class dbProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri,null);
 
         return db.update(dbContract.warehouseEntry.TABLE_NAME,values,selection,selectionArgs);
+    }
+
+    private int updateClients(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        if(values.containsKey(dbContract.clientsEntry.COL_NAMES)){
+            String value = values.getAsString(dbContract.clientsEntry.COL_NAMES);
+            if(value==null){
+                throw new IllegalArgumentException("Name is required field!");
+            }
+        }
+        if(values.containsKey(dbContract.clientsEntry.COL_SURNAME)){
+            String value = values.getAsString(dbContract.clientsEntry.COL_SURNAME);
+            if(value==null){
+                throw new IllegalArgumentException("Surname is required field!");
+            }
+        }
+        if(values.containsKey(dbContract.clientsEntry.COL_PHONE_NUMBER)){
+            String value = values.getAsString(dbContract.clientsEntry.COL_PHONE_NUMBER);
+            if(value==null){
+                throw new IllegalArgumentException("Phone number is required field!");
+            }
+        }
+        if(values.containsKey(dbContract.clientsEntry.COL_ADRESS)){
+            String value = values.getAsString(dbContract.clientsEntry.COL_ADRESS);
+            if(value==null){
+                throw new IllegalArgumentException("Adress is required field!");
+            }
+        }
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        getContext().getContentResolver().notifyChange(uri,null);
+
+        return db.update(dbContract.clientsEntry.TABLE_NAME,values,selection,selectionArgs);
     }
 
 }

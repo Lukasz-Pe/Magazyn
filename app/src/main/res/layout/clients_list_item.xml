@@ -4,32 +4,57 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="@dimen/list_item_horizontal_margin"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_weight="1"
-        android:background="@color/colorAccent">
+        android:layout_weight="1">
         <TextView
-            android:id="@+id/textView_clients_names"
+            android:id="@+id/textView_clients_li_surnames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/colorPrimary"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:hint="@string/client_surname"/>
+        <TextView
+            android:id="@+id/textView_clients_li_names"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size"
             android:textColor="@color/colorPrimary"
             android:hint="@string/client_names"
             />
-        <TextView
-            android:id="@+id/textView_clients_surnames"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
-            android:textColor="@color/colorPrimary"
-            android:hint="@string/client_surname"/>
     </LinearLayout>
-    <Image
+    <ImageButton
+        android:id="@+id/imageButton_clients_li_call"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
+        android:background="@null"
+        android:focusable="false"
+        android:onClick="clientsCall"
+        android:src="@drawable/outline_phone_black_48"/>
+    <ImageButton
+        android:id="@+id/imageButton_clients_li_navigate"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@null"
+        android:focusable="false"
+        android:onClick="clientsNavigate"
         android:src="@drawable/outline_navigation_black_48"/>
+    <TextView
+        android:id="@+id/textView_clients_li_phone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/textView_clients_li_adress"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
 </LinearLayout>

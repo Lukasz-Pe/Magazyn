@@ -3,7 +3,6 @@ package com.egm.magazyn.data.dbClasses;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.egm.magazyn.data.dbClasses.dbContract.*;
 
@@ -21,9 +20,9 @@ public class dbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String REMINDERS_CREATE_TABLE = "CREATE TABLE " + remindersEntry.TABLE_NAME + " ("
                 + remindersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + remindersEntry.COLUMN_EQUIPMENT_NAME + " TEXT NOT NULL, "
-                + remindersEntry.COLUMN_SERIAL_NUMBER + " TEXT NOT NULL, "
-                + remindersEntry.COLUMN_NEXT_INSPECTION_DATE + " TEXT NOT NULL);";
+                + remindersEntry.COL_EQUIPMENT_NAME + " TEXT NOT NULL, "
+                + remindersEntry.COL_SERIAL_NUMBER + " TEXT NOT NULL, "
+                + remindersEntry.COL_NEXT_INSPECTION_DATE + " TEXT NOT NULL);";
 
         String WAREHOUSE_CREATE_TABLE = "CREATE TABLE " + warehouseEntry.TABLE_NAME + " ( "
                 + warehouseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -40,8 +39,17 @@ public class dbHelper extends SQLiteOpenHelper {
                 + warehouseEntry.COL_LAST_DELIVERY_PRICE + " REAL, "
                 + warehouseEntry.COL_LAST_DELIVERY_DATE + " TEXT);";
 
+        String CLIENTS_CREATE_TABLE = "CREATE TABLE " + clientsEntry.TABLE_NAME + " ("
+                + clientsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + clientsEntry.COL_NAMES + " TEXT NOT NULL, "
+                + clientsEntry.COL_SURNAME + " TEXT NOT NULL, "
+                + clientsEntry.COL_PHONE_NUMBER + " INTEGER NOT NULL, "
+                + clientsEntry.COL_ADRESS + " TEXT NOT NULL, "
+                + clientsEntry.COL_NOTES + " TEXT);";
+
         sqLiteDatabase.execSQL(REMINDERS_CREATE_TABLE);
         sqLiteDatabase.execSQL(WAREHOUSE_CREATE_TABLE);
+        sqLiteDatabase.execSQL(CLIENTS_CREATE_TABLE);
     }
 
     @Override

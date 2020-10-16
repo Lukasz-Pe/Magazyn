@@ -51,4 +51,5 @@
     <string name="client_payment_method">Payment method</string>
     <string name="client_notes">Notes</string>
     <string name="client_adress">Clients\' adress</string>
+    <string name="client_phone">Clients\' phone number</string>
 </resources>

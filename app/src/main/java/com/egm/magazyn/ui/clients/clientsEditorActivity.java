@@ -1,9 +1,7 @@
-package com.egm.magazyn.ui.reminders;
+package com.egm.magazyn.ui.clients;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
-import androidx.loader.content.CursorLoader;
-//import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.egm.magazyn.R;
@@ -26,9 +25,16 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.*;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COL_EQUIPMENT_NAME;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COL_NEXT_INSPECTION_DATE;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COL_SERIAL_NUMBER;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.CONTENT_URI;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.TABLE_NAME;
+import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry._ID;
 
-public class remindersEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+//import android.content.CursorLoader;
+
+public class clientsEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private EditText equipmentName, serialNumber;
     private TextView nextInspectionDate;
@@ -115,7 +121,7 @@ public class remindersEditorActivity extends AppCompatActivity implements Loader
                 final int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
                 // date picker dialog
-                picker = new DatePickerDialog(remindersEditorActivity.this,
+                picker = new DatePickerDialog(clientsEditorActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

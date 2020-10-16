@@ -1,4 +1,4 @@
-package com.egm.magazyn.ui.reminders;
+package com.egm.magazyn.ui.clients;
 
 import android.content.ContentUris;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -22,19 +23,27 @@ import com.egm.magazyn.R;
 import com.egm.magazyn.data.dbClasses.dbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.*;
+import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_ADRESS;
+import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_NAMES;
+import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_NOTES;
+import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_PHONE_NUMBER;
+import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_SURNAME;
+import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.CONTENT_URI;
+import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry._ID;
 
-public class remindersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class clientsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private com.egm.magazyn.data.dbClasses.dbHelper dbHelper;
-    private remindersCursorAdapter cursorAdapter;
+    private clientsCursorAdapter cursorAdapter;
 
-    private static final int REMINDERS_LOADER=0;
-    static final String[] REMINDERS_PROJECTION=new String[]{
+    private static final int CLIENTS_LOADER =0;
+    static final String[] CLIENTS_PROJECTION =new String[]{
             _ID,
-            COL_EQUIPMENT_NAME,
-            COL_SERIAL_NUMBER,
-            COL_NEXT_INSPECTION_DATE
+            COL_NAMES,
+            COL_SURNAME,
+            COL_PHONE_NUMBER,
+            COL_ADRESS,
+            COL_NOTES
     };
 
     private static final String ARG_PARAM1="param1";
@@ -43,12 +52,12 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
     private String mParam1;
     private String mParam2;
 
-    public remindersFragment(){
+    public clientsFragment(){
         //Req empty public c'tor
     }
 
-    public static remindersFragment newInstance(String param1, String param2){
-        remindersFragment fragment=new remindersFragment();
+    public static clientsFragment newInstance(String param1, String param2){
+        clientsFragment fragment=new clientsFragment();
         Bundle args=new Bundle();
         args.putString(ARG_PARAM1,param1);
         args.putString(ARG_PARAM2,param2);
@@ -67,34 +76,34 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View rootView=inflater.inflate(R.layout.reminders_layout,container,false);
+        View rootView=inflater.inflate(R.layout.clients_layout,container,false);
 
-        ListView lv=(ListView) rootView.findViewById(R.id.reminders_list_view);
-        View emptyView=rootView.findViewById(R.id.empty_view);
+        ListView lv=(ListView) rootView.findViewById(R.id.clients_list_view);
+        View emptyView=rootView.findViewById(R.id.clients_empty_view);
         lv.setEmptyView(emptyView);
 
         dbHelper=new dbHelper(getContext());
-        cursorAdapter=new remindersCursorAdapter(getContext(), null);
+        cursorAdapter=new clientsCursorAdapter(getContext(), null);
         lv.setAdapter(cursorAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent editRem=new Intent (getActivity(), remindersEditorActivity.class);
+                Intent editRem=new Intent (getActivity(), clientsEditorActivity.class);
                 Uri content= ContentUris.withAppendedId(CONTENT_URI, id);
                 editRem.setData(content);
                 startActivity(editRem);
             }
         });
 
-        final FloatingActionButton addAlert = (FloatingActionButton) rootView.findViewById(R.id.reminders_add_item_fab);
-        addAlert.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionButton addClient = (FloatingActionButton) rootView.findViewById(R.id.clients_add);
+        addClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), remindersEditorActivity.class);
+                Intent intent = new Intent(getActivity(), clientsEditorActivity.class);
                 startActivity(intent);
             }
         });
-        LoaderManager.getInstance(this).initLoader(REMINDERS_LOADER, null, this);
+        LoaderManager.getInstance(this).initLoader(CLIENTS_LOADER, null, this);
         return rootView;
     }
 
@@ -103,7 +112,7 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         return new CursorLoader(getContext(),
                 CONTENT_URI,
-                REMINDERS_PROJECTION,
+                CLIENTS_PROJECTION,
                 null,null,null);
     }
 
@@ -116,4 +125,21 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
     }
+
+    public void clientsCall(View view){
+        LinearLayout row = (LinearLayout) view.getParent();
+        String phoneNumber="tel:" + row.findViewById(R.id.textView_clients_li_phone);
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(phoneNumber));
+        startActivity(intent);
+    }
+
+    public void clientsNavigate(View view){
+        LinearLayout row = (LinearLayout) view.getParent();
+        String address="geo:0,0?q=" + row.findViewById(R.id.textView_clients_li_adress);
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(address));
+        startActivity(intent);
+    }
+
 }

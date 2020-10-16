@@ -32,9 +32,9 @@ public class remindersCursorAdapter extends CursorAdapter{
         TextView serialNumber=(TextView) view.findViewById(R.id.equipment_serial_number);
         TextView timeTillNextInspectionDate=(TextView) view.findViewById(R.id.time_till_inspection);
 
-        String equipmentNameText= cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_EQUIPMENT_NAME));
-        String equipmentSerialNumberText=cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_SERIAL_NUMBER));
-        String nextInspectionDateText= cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COLUMN_NEXT_INSPECTION_DATE));
+        String equipmentNameText= cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COL_EQUIPMENT_NAME));
+        String equipmentSerialNumberText=cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COL_SERIAL_NUMBER));
+        String nextInspectionDateText= cursor.getString(cursor.getColumnIndexOrThrow(remindersEntry.COL_NEXT_INSPECTION_DATE));
         DateTimeFormatter formatter=DateTimeFormatter.ofPattern("uuuu-M-d");
         LocalDate NextInspectionDateDate = LocalDate.parse(nextInspectionDateText, formatter);
         Period diff = Period.between(LocalDate.now(),NextInspectionDateDate);

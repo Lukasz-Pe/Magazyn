@@ -15,9 +15,9 @@ public final class dbContract {
         public final static String TABLE_NAME="reminders";
         public static final Uri CONTENT_URI=Uri.withAppendedPath(BASE_CONTENT_URI, TABLE_NAME);
         public final static String _ID=BaseColumns._ID;
-        public final static String COLUMN_EQUIPMENT_NAME="name";
-        public final static String COLUMN_NEXT_INSPECTION_DATE="next_inspection_date";
-        public final static String COLUMN_SERIAL_NUMBER="serial_number";
+        public final static String COL_EQUIPMENT_NAME ="name";
+        public final static String COL_NEXT_INSPECTION_DATE ="next_inspection_date";
+        public final static String COL_SERIAL_NUMBER ="serial_number";
 
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+remindersEntry.TABLE_NAME;
@@ -85,5 +85,22 @@ public final class dbContract {
 
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+ warehouseEntry.TABLE_NAME;
+    }
+
+    public static final class clientsEntry implements BaseColumns{
+        public final static String TABLE_NAME = "clients";
+        public final static Uri CONTENT_URI=Uri.withAppendedPath(BASE_CONTENT_URI, TABLE_NAME);
+        public final static String _ID=BaseColumns._ID;
+        public final static String COL_NAMES = "names";
+        public final static String COL_SURNAME = "surname";
+        public final static String COL_PHONE_NUMBER = "phone_number";
+        public final static String COL_ADRESS = "adress";
+        public final static String COL_NOTES = "notes";
+
+        public static final String CONTENT_LIST_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+remindersEntry.TABLE_NAME;
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+remindersEntry.TABLE_NAME;
     }
 }
