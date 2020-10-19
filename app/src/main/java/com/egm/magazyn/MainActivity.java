@@ -1,8 +1,14 @@
 package com.egm.magazyn;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -62,4 +68,21 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public void clientsCall(View view){
+        LinearLayout row = (LinearLayout) view.getParent();
+        String phoneNumber="tel:" + ((TextView) row.findViewById(R.id.textView_clients_li_phone)).getText().toString();
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse(phoneNumber));
+        startActivity(intent);
+    }
+
+    public void clientsNavigate(View view){
+        LinearLayout row = (LinearLayout) view.getParent();
+        String address="geo:0,0?q=" + ((TextView)row.findViewById(R.id.textView_clients_li_adress)).getText().toString();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(address));
+        startActivity(intent);
+    }
+
 }

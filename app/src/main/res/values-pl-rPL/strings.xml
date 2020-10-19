@@ -50,6 +50,6 @@
     <string name="client_surname">Nazwisko</string>
     <string name="client_payment_method">Metoda platności</string>
     <string name="client_notes">Notatki</string>
-    <string name="client_adress">Adres klienta</string>
+    <string name="client_address">Adres klienta</string>
     <string name="client_phone">Numer telefonu klienta</string>
 </resources>

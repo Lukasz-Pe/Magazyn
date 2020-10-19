@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -88,10 +91,10 @@ public class clientsFragment extends Fragment implements LoaderManager.LoaderCal
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent editRem=new Intent (getActivity(), clientsEditorActivity.class);
+                Intent edit=new Intent (getActivity(), clientsEditorActivity.class);
                 Uri content= ContentUris.withAppendedId(CONTENT_URI, id);
-                editRem.setData(content);
-                startActivity(editRem);
+                edit.setData(content);
+                startActivity(edit);
             }
         });
 
@@ -124,22 +127,6 @@ public class clientsFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
-    }
-
-    public void clientsCall(View view){
-        LinearLayout row = (LinearLayout) view.getParent();
-        String phoneNumber="tel:" + row.findViewById(R.id.textView_clients_li_phone);
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(phoneNumber));
-        startActivity(intent);
-    }
-
-    public void clientsNavigate(View view){
-        LinearLayout row = (LinearLayout) view.getParent();
-        String address="geo:0,0?q=" + row.findViewById(R.id.textView_clients_li_adress);
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse(address));
-        startActivity(intent);
     }
 
 }

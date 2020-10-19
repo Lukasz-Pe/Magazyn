@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,168 +24,106 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COL_EQUIPMENT_NAME;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COL_NEXT_INSPECTION_DATE;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.COL_SERIAL_NUMBER;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.CONTENT_URI;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry.TABLE_NAME;
-import static com.egm.magazyn.data.dbClasses.dbContract.remindersEntry._ID;
+import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.*;
 
 //import android.content.CursorLoader;
 
 public class clientsEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private EditText equipmentName, serialNumber;
-    private TextView nextInspectionDate;
+    private EditText names, surname, phoneNumber, address, notes;
 
     private static final String[] PROJECTION=new String[]{
             _ID,
-            COL_EQUIPMENT_NAME,
-            COL_SERIAL_NUMBER,
-            COL_NEXT_INSPECTION_DATE
+            COL_NAMES,
+            COL_SURNAME,
+            COL_PHONE_NUMBER,
+            COL_ADRESS,
+            COL_NOTES
     };
 
     private Intent intent;
 
-    private static final int EXISTING_EQUIPMENT_LOADER=0;
+    private static final int EXISTING_LOADER =0;
     private boolean hasChanged=false, operationSuccessful=false;
 
-    private FloatingActionButton menuFAB, close, save, delete, cancel;
+    private FloatingActionButton save, delete, back;
     private DatePickerDialog picker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.reminders_editor);
+        setContentView(R.layout.clients_editor_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         intent=getIntent();
         if(intent.getData()!=null){
             setTitle(R.string.edit_position);
-            LoaderManager.getInstance(this).initLoader(EXISTING_EQUIPMENT_LOADER, null, this);
+            LoaderManager.getInstance(this).initLoader(EXISTING_LOADER, null, this);
         }else{
             setTitle(R.string.add_position);
         }
-        equipmentName = (EditText) findViewById(R.id.input_eq_name);
-        serialNumber = (EditText) findViewById(R.id.input_eq_serial_number);
-        nextInspectionDate = (TextView) findViewById(R.id.input_next_inspection_date);
-        menuFAB = findViewById(R.id.reminders_edit_menu_fab);
-        close= findViewById(R.id.reminders_edit_close_fab);
-        save= findViewById(R.id.reminders_edit_save_fab);
-        delete= findViewById(R.id.reminders_edit_delete_fab);
-        cancel= findViewById(R.id.reminders_edit_cancel_fab);
-        close.hide();
-        delete.hide();
-        save.hide();
-        cancel.hide();
-        menuFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showMenu();
-            }
-        });
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeMenu();
-            }
-        });
+        names = (EditText) findViewById(R.id.editText_clients_names);
+        surname = (EditText) findViewById(R.id.editText_clients_surname);
+        phoneNumber = (EditText) findViewById(R.id.editText_clients_phone);
+        address = (EditText) findViewById(R.id.editText_clients_address);
+        notes = (EditText) findViewById(R.id.editText_clients_notes);
+        save = findViewById(R.id.fab_clients_save);
+        delete = findViewById(R.id.fab_clients_delete);
+        back = findViewById(R.id.fab_clients_back);
+        save.animate().translationY(-getResources().getDimension(R.dimen.fab_spacing));
+        delete.animate().translationX(-getResources().getDimension(R.dimen.fab_spacing));
+        delete.show();
+        save.show();
+        back.show();
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getContentResolver().delete(intent.getData(),TABLE_NAME, PROJECTION);
-                if(operationSuccessful)
-                    finish();
+                finish();
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view   ) {
                 saveData(view);
-                closeMenu();
                 if(operationSuccessful)
                     finish();
             }
         });
-        cancel.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        nextInspectionDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Calendar cldr = Calendar.getInstance();
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                final int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
-                picker = new DatePickerDialog(clientsEditorActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                String moy, dom;
-                                monthOfYear++;
-                                if(monthOfYear<10){
-                                    moy="0"+String.valueOf(monthOfYear);
-                                }else{
-                                    moy=String.valueOf(monthOfYear);
-                                }
-                                if(dayOfMonth<10){
-                                    dom="0"+String.valueOf(dayOfMonth);
-                                }else{
-                                    dom=String.valueOf(dayOfMonth);
-                                }
-                                nextInspectionDate.setText(year + "-" + moy + "-" + dom);
-                            }
-                        }, year, month, day);
-                picker.show();
-            }
-        });
-
-    }
-
-    private void showMenu(){
-        menuFAB.hide();
-        close.show();
-        delete.show();
-        save.show();
-        cancel.show();
-        delete.animate().translationY(-3*getResources().getDimension(R.dimen.fab_spacing));
-        save.animate().translationY(-2*getResources().getDimension(R.dimen.fab_spacing));
-        cancel.animate().translationY(-getResources().getDimension(R.dimen.fab_spacing));
-    }
-
-    private void closeMenu(){
-        delete.animate().translationY(0);
-        save.animate().translationY(0);
-        cancel.animate().translationY(0);
-        close.hide();
-        delete.hide();
-        save.hide();
-        cancel.hide();
-        menuFAB.show();
     }
 
     private void saveData(View view){
-        String equipmentNameText=equipmentName.getText().toString().trim();
-        String serialNumberText=serialNumber.getText().toString().trim();
-        String nextInspectionDateString=nextInspectionDate.getText().toString().trim();
-        if(equipmentNameText.isEmpty()){
+        String namesString = names.getText().toString().trim();
+        String surnameString = surname.getText().toString().trim();
+        String phoneNumberString = phoneNumber.getText().toString().trim();
+        String addressString = address.getText().toString().trim();
+        String notesString = notes.getText().toString().trim();
+        if(namesString.isEmpty()){
             Snackbar.make(view,
-                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_name),
+                    getString(R.string.empty_field)+"\n"+getString(R.string.client_names),
                     Snackbar.LENGTH_LONG).show();
             return;
         }
-        if(serialNumberText.isEmpty()){
+        if(surnameString.isEmpty()){
             Snackbar.make(view,
-                    getString(R.string.empty_field)+"\n"+getString(R.string.string_equipment_serial_number),
+                    getString(R.string.empty_field)+"\n"+getString(R.string.client_surname),
                     Snackbar.LENGTH_LONG).show();
             return;
         }
-        if(nextInspectionDateString.isEmpty()){
+        if(phoneNumberString.isEmpty()){
             Snackbar.make(view,
-                    getString(R.string.empty_field)+"\n"+getString(R.string.string_next_inspection_date),
+                    getString(R.string.empty_field)+"\n"+getString(R.string.client_phone),
+                    Snackbar.LENGTH_LONG).show();
+            return;
+        }
+        if(addressString.isEmpty()){
+            Snackbar.make(view,
+                    getString(R.string.empty_field)+"\n"+getString(R.string.client_address),
                     Snackbar.LENGTH_LONG).show();
             return;
         }
@@ -194,9 +131,11 @@ public class clientsEditorActivity extends AppCompatActivity implements LoaderMa
         dbProvider rp=new dbProvider();
 
         ContentValues cvs=new ContentValues();
-        cvs.put(COL_EQUIPMENT_NAME, equipmentNameText);
-        cvs.put(COL_SERIAL_NUMBER, serialNumberText);
-        cvs.put(COL_NEXT_INSPECTION_DATE,nextInspectionDateString);
+        cvs.put(COL_NAMES, namesString);
+        cvs.put(COL_SURNAME, surnameString);
+        cvs.put(COL_PHONE_NUMBER,phoneNumberString);
+        cvs.put(COL_ADRESS, addressString);
+        cvs.put(COL_NOTES, notesString);
 
         if(intent.getData()==null){
             Uri newRowID = getContentResolver().insert(CONTENT_URI, cvs);
@@ -232,9 +171,11 @@ public class clientsEditorActivity extends AppCompatActivity implements LoaderMa
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if(data.moveToFirst()){
-            equipmentName.setText(data.getString(data.getColumnIndexOrThrow(COL_EQUIPMENT_NAME)));
-            serialNumber.setText(data.getString(data.getColumnIndexOrThrow(COL_SERIAL_NUMBER)));
-            nextInspectionDate.setText(data.getString(data.getColumnIndexOrThrow(COL_NEXT_INSPECTION_DATE)));
+            names.setText(data.getString(data.getColumnIndexOrThrow(COL_NAMES)));
+            surname.setText(data.getString(data.getColumnIndexOrThrow(COL_SURNAME)));
+            phoneNumber.setText(data.getString(data.getColumnIndexOrThrow(COL_PHONE_NUMBER)));
+            address.setText(data.getString(data.getColumnIndexOrThrow(COL_ADRESS)));
+            notes.setText(data.getString(data.getColumnIndexOrThrow(COL_NOTES)));
         }
     }
     View.OnTouchListener onTouchListener=new View.OnTouchListener(){
@@ -247,8 +188,10 @@ public class clientsEditorActivity extends AppCompatActivity implements LoaderMa
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        equipmentName.setText("");
-        serialNumber.setText("");
-        nextInspectionDate.setText(getString(R.string.string_next_inspection_date));
+        names.setText("");
+        surname.setText("");
+        phoneNumber.setText("");
+        address.setText("");
+        notes.setText("");
     }
 }

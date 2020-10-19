@@ -39,6 +39,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".ui.clients.clientsEditorActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".MainActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <provider
             android:name=".data.dbClasses.dbProvider"
             android:authorities="com.egm.magazyn"

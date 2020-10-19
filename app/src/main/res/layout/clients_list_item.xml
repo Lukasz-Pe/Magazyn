@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="@dimen/list_item_horizontal_margin"
     android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants"
     >
     <LinearLayout
         android:layout_width="wrap_content"
@@ -49,12 +50,12 @@
         android:src="@drawable/outline_navigation_black_48"/>
     <TextView
         android:id="@+id/textView_clients_li_phone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"/>
     <TextView
         android:id="@+id/textView_clients_li_adress"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"/>
 </LinearLayout>

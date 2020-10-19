@@ -43,7 +43,7 @@ public class dbHelper extends SQLiteOpenHelper {
                 + clientsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + clientsEntry.COL_NAMES + " TEXT NOT NULL, "
                 + clientsEntry.COL_SURNAME + " TEXT NOT NULL, "
-                + clientsEntry.COL_PHONE_NUMBER + " INTEGER NOT NULL, "
+                + clientsEntry.COL_PHONE_NUMBER + " TEXT NOT NULL, "
                 + clientsEntry.COL_ADRESS + " TEXT NOT NULL, "
                 + clientsEntry.COL_NOTES + " TEXT);";
 

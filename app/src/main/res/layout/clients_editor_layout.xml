@@ -69,10 +69,10 @@
                 android:layout_gravity="center"
                 android:src="@drawable/outline_place_black_48"/>
             <EditText
-                android:id="@+id/editText_clients_localization"
+                android:id="@+id/editText_clients_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/client_adress"
+                android:hint="@string/client_address"
                 android:layout_weight="1"
                 android:inputType="textMultiLine"
                 android:textSize="@dimen/text_size"
