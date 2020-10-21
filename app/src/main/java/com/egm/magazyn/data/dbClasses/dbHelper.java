@@ -39,17 +39,25 @@ public class dbHelper extends SQLiteOpenHelper {
                 + warehouseEntry.COL_LAST_DELIVERY_PRICE + " REAL, "
                 + warehouseEntry.COL_LAST_DELIVERY_DATE + " TEXT);";
 
-        String CLIENTS_CREATE_TABLE = "CREATE TABLE " + clientsEntry.TABLE_NAME + " ("
-                + clientsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + clientsEntry.COL_NAMES + " TEXT NOT NULL, "
-                + clientsEntry.COL_SURNAME + " TEXT NOT NULL, "
-                + clientsEntry.COL_PHONE_NUMBER + " TEXT NOT NULL, "
-                + clientsEntry.COL_ADRESS + " TEXT NOT NULL, "
-                + clientsEntry.COL_NOTES + " TEXT);";
+        String CUSTOMERS_CREATE_TABLE = "CREATE TABLE " + customersEntry.TABLE_NAME + " ("
+                + customersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + customersEntry.COL_NAMES + " TEXT NOT NULL, "
+                + customersEntry.COL_SURNAME + " TEXT NOT NULL, "
+                + customersEntry.COL_PHONE_NUMBER + " TEXT NOT NULL, "
+                + customersEntry.COL_ADRESS + " TEXT NOT NULL, "
+                + customersEntry.COL_NOTES + " TEXT);";
+
+        String DELIVERIES_CREATE_TABLE = "CREATE TABLE " + deliveryEntry.TABLE_NAME + " ("
+                + deliveryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + deliveryEntry.COL_CLIENT_ID + " TEXT NOT NULL, "
+                + deliveryEntry.COL_PRODUCTS_IDS + " TEXT NOT NULL, "
+                + deliveryEntry.COL_ALL_PRODUCTS_LOADED + " INTEGER, "
+                + deliveryEntry.COL_DELIVERY_STATE + " INTEGER);";
 
         sqLiteDatabase.execSQL(REMINDERS_CREATE_TABLE);
         sqLiteDatabase.execSQL(WAREHOUSE_CREATE_TABLE);
-        sqLiteDatabase.execSQL(CLIENTS_CREATE_TABLE);
+        sqLiteDatabase.execSQL(CUSTOMERS_CREATE_TABLE);
+        sqLiteDatabase.execSQL(DELIVERIES_CREATE_TABLE);
     }
 
     @Override

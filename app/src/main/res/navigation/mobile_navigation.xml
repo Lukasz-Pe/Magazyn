@@ -3,13 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_warehouse">
+    app:startDestination="@+id/nav_orders">
+
+    <fragment
+        android:id="@+id/nav_orders"
+        android:name="com.egm.magazyn.ui.general.myFragment"
+        android:label="@string/menu_orders"
+        tools:layout="@layout/basic_layout" />
 
     <fragment
         android:id="@+id/nav_warehouse"
         android:name="com.egm.magazyn.ui.warehouse.warehouseFragment"
         android:label="@string/menu_warehouse"
-        tools:layout="@layout/basic_layout" />
+        tools:layout="@layout/warehouse_layout" />
 
     <fragment
         android:id="@+id/nav_shop"
@@ -19,15 +25,9 @@
 
     <fragment
         android:id="@+id/nav_customer"
-        android:name="com.egm.magazyn.ui.clients.clientsFragment"
+        android:name="com.egm.magazyn.ui.customers.customersFragment"
         android:label="@string/menu_customer"
-        tools:layout="@layout/basic_layout" />
-
-    <fragment
-        android:id="@+id/nav_product"
-        android:name="com.egm.magazyn.ui.general.myFragment"
-        android:label="@string/menu_product"
-        tools:layout="@layout/basic_layout" />
+        tools:layout="@layout/customers_layout" />
 
     <fragment
         android:id="@+id/nav_value_box"
@@ -39,7 +39,7 @@
         android:id="@+id/nav_next_inspection_date"
         android:name="com.egm.magazyn.ui.reminders.remindersFragment"
         android:label="@string/menu_next_inspection_date"
-        tools:layout="@layout/basic_layout" />
+        tools:layout="@layout/reminders_layout" />
 
     <fragment
         android:id="@+id/nav_market"

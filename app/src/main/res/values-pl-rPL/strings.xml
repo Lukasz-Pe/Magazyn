@@ -9,7 +9,7 @@
     <string name="menu_warehouse">Magazyn</string>
     <string name="menu_shop">Sklep</string>
     <string name="menu_customer">Klient</string>
-    <string name="menu_product">Dane produktu</string>
+    <string name="menu_orders">Zamówienia</string>
     <string name="menu_value_box">Skrzynka wartościowa</string>
     <string name="menu_next_inspection_date">Terminy inspekcji</string>
     <string name="menu_market">Rynek</string>

@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <EditText
-                    android:id="@+id/editText_clients_names"
+                    android:id="@+id/editText_customers_names"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -28,7 +28,7 @@
                     android:inputType="textPersonName"
                     />
                 <EditText
-                    android:id="@+id/editText_clients_surname"
+                    android:id="@+id/editText_customers_surname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -49,7 +49,7 @@
             android:layout_gravity="center"
             android:src="@drawable/outline_contact_phone_black_48"/>
         <EditText
-            android:id="@+id/editText_clients_phone"
+            android:id="@+id/editText_customers_phone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/client_phone"
@@ -69,7 +69,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/outline_place_black_48"/>
             <EditText
-                android:id="@+id/editText_clients_address"
+                android:id="@+id/editText_customers_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/client_address"
@@ -79,11 +79,11 @@
                 />
         </LinearLayout>
         <Spinner
-            android:id="@+id/spinner_clients_payment_methods"
+            android:id="@+id/spinner_customers_payment_methods"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <EditText
-            android:id="@+id/editText_clients_notes"
+            android:id="@+id/editText_customers_notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
@@ -92,21 +92,21 @@
             />
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_clients_save"
+        android:id="@+id/fab_customers_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/outline_save_black_48" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_clients_delete"
+        android:id="@+id/fab_customers_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/outline_delete_black_48" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_clients_back"
+        android:id="@+id/fab_customers_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

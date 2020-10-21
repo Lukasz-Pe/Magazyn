@@ -1,4 +1,4 @@
-package com.egm.magazyn.ui.clients;
+package com.egm.magazyn.ui.customers;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -22,13 +21,11 @@ import com.egm.magazyn.data.dbClasses.dbProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Calendar;
-
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.*;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry.*;
 
 //import android.content.CursorLoader;
 
-public class clientsEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class customersEditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private EditText names, surname, phoneNumber, address, notes;
 
@@ -52,7 +49,7 @@ public class clientsEditorActivity extends AppCompatActivity implements LoaderMa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.clients_editor_layout);
+        setContentView(R.layout.customers_editor_layout);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         intent=getIntent();
         if(intent.getData()!=null){
@@ -61,14 +58,14 @@ public class clientsEditorActivity extends AppCompatActivity implements LoaderMa
         }else{
             setTitle(R.string.add_position);
         }
-        names = (EditText) findViewById(R.id.editText_clients_names);
-        surname = (EditText) findViewById(R.id.editText_clients_surname);
-        phoneNumber = (EditText) findViewById(R.id.editText_clients_phone);
-        address = (EditText) findViewById(R.id.editText_clients_address);
-        notes = (EditText) findViewById(R.id.editText_clients_notes);
-        save = findViewById(R.id.fab_clients_save);
-        delete = findViewById(R.id.fab_clients_delete);
-        back = findViewById(R.id.fab_clients_back);
+        names = (EditText) findViewById(R.id.editText_customers_names);
+        surname = (EditText) findViewById(R.id.editText_customers_surname);
+        phoneNumber = (EditText) findViewById(R.id.editText_customers_phone);
+        address = (EditText) findViewById(R.id.editText_customers_address);
+        notes = (EditText) findViewById(R.id.editText_customers_notes);
+        save = findViewById(R.id.fab_customers_save);
+        delete = findViewById(R.id.fab_customers_delete);
+        back = findViewById(R.id.fab_customers_back);
         save.animate().translationY(-getResources().getDimension(R.dimen.fab_spacing));
         delete.animate().translationX(-getResources().getDimension(R.dimen.fab_spacing));
         delete.show();

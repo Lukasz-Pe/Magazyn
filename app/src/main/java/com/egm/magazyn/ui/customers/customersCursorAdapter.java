@@ -1,4 +1,4 @@
-package com.egm.magazyn.ui.clients;
+package com.egm.magazyn.ui.customers;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -10,23 +10,23 @@ import android.widget.TextView;
 
 import com.egm.magazyn.R;
 
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.*;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry.*;
 
-public class clientsCursorAdapter extends CursorAdapter{
+public class customersCursorAdapter extends CursorAdapter{
 
-    public clientsCursorAdapter(Context context, Cursor c){super(context, c, 0);}
+    public customersCursorAdapter(Context context, Cursor c){super(context, c, 0);}
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return LayoutInflater.from(context).inflate(R.layout.clients_list_item, viewGroup,false);
+        return LayoutInflater.from(context).inflate(R.layout.customers_list_item, viewGroup,false);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView names=(TextView) view.findViewById(R.id.textView_clients_li_names);
-        TextView surname=(TextView) view.findViewById(R.id.textView_clients_li_surnames);
-        TextView phoneNumber = (TextView) view.findViewById(R.id.textView_clients_li_phone);
-        TextView adress = (TextView) view.findViewById(R.id.textView_clients_li_adress);
+        TextView names=(TextView) view.findViewById(R.id.textView_customers_li_names);
+        TextView surname=(TextView) view.findViewById(R.id.textView_customers_li_surnames);
+        TextView phoneNumber = (TextView) view.findViewById(R.id.textView_customers_li_phone);
+        TextView adress = (TextView) view.findViewById(R.id.textView_customers_li_adress);
 
         String namesText= cursor.getString(cursor.getColumnIndexOrThrow(COL_NAMES));
         String surnameText=cursor.getString(cursor.getColumnIndexOrThrow(COL_SURNAME));

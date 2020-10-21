@@ -9,7 +9,7 @@
     <string name="menu_warehouse">Warehouse</string>
     <string name="menu_shop">Shop</string>
     <string name="menu_customer">Customer</string>
-    <string name="menu_product">Product data</string>
+    <string name="menu_orders">Order</string>
     <string name="menu_value_box">Value box</string>
     <string name="menu_next_inspection_date">Inpection dates</string>
     <string name="menu_market">Market</string>

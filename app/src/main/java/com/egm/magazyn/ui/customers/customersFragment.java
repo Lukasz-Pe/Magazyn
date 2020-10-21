@@ -1,19 +1,15 @@
-package com.egm.magazyn.ui.clients;
+package com.egm.magazyn.ui.customers;
 
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,18 +22,18 @@ import com.egm.magazyn.R;
 import com.egm.magazyn.data.dbClasses.dbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_ADRESS;
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_NAMES;
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_NOTES;
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_PHONE_NUMBER;
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.COL_SURNAME;
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry.CONTENT_URI;
-import static com.egm.magazyn.data.dbClasses.dbContract.clientsEntry._ID;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry.COL_ADRESS;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry.COL_NAMES;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry.COL_NOTES;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry.COL_PHONE_NUMBER;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry.COL_SURNAME;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry.CONTENT_URI;
+import static com.egm.magazyn.data.dbClasses.dbContract.customersEntry._ID;
 
-public class clientsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class customersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private com.egm.magazyn.data.dbClasses.dbHelper dbHelper;
-    private clientsCursorAdapter cursorAdapter;
+    private customersCursorAdapter cursorAdapter;
 
     private static final int CLIENTS_LOADER =0;
     static final String[] CLIENTS_PROJECTION =new String[]{
@@ -55,12 +51,12 @@ public class clientsFragment extends Fragment implements LoaderManager.LoaderCal
     private String mParam1;
     private String mParam2;
 
-    public clientsFragment(){
+    public customersFragment(){
         //Req empty public c'tor
     }
 
-    public static clientsFragment newInstance(String param1, String param2){
-        clientsFragment fragment=new clientsFragment();
+    public static customersFragment newInstance(String param1, String param2){
+        customersFragment fragment=new customersFragment();
         Bundle args=new Bundle();
         args.putString(ARG_PARAM1,param1);
         args.putString(ARG_PARAM2,param2);
@@ -79,19 +75,19 @@ public class clientsFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View rootView=inflater.inflate(R.layout.clients_layout,container,false);
+        View rootView=inflater.inflate(R.layout.customers_layout,container,false);
 
-        ListView lv=(ListView) rootView.findViewById(R.id.clients_list_view);
-        View emptyView=rootView.findViewById(R.id.clients_empty_view);
+        ListView lv=(ListView) rootView.findViewById(R.id.customers_list_view);
+        View emptyView=rootView.findViewById(R.id.customers_empty_view);
         lv.setEmptyView(emptyView);
 
         dbHelper=new dbHelper(getContext());
-        cursorAdapter=new clientsCursorAdapter(getContext(), null);
+        cursorAdapter=new customersCursorAdapter(getContext(), null);
         lv.setAdapter(cursorAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent edit=new Intent (getActivity(), clientsEditorActivity.class);
+                Intent edit=new Intent (getActivity(), customersEditorActivity.class);
                 Uri content= ContentUris.withAppendedId(CONTENT_URI, id);
                 edit.setData(content);
                 startActivity(edit);
@@ -102,7 +98,7 @@ public class clientsFragment extends Fragment implements LoaderManager.LoaderCal
         addClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), clientsEditorActivity.class);
+                Intent intent = new Intent(getActivity(), customersEditorActivity.class);
                 startActivity(intent);
             }
         });

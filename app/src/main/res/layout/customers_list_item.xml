@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:layout_weight="1">
         <TextView
-            android:id="@+id/textView_clients_li_surnames"
+            android:id="@+id/textView_customers_li_surnames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size"
@@ -22,7 +22,7 @@
             android:textStyle="bold"
             android:hint="@string/client_surname"/>
         <TextView
-            android:id="@+id/textView_clients_li_names"
+            android:id="@+id/textView_customers_li_names"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size"
@@ -31,7 +31,7 @@
             />
     </LinearLayout>
     <ImageButton
-        android:id="@+id/imageButton_clients_li_call"
+        android:id="@+id/imageButton_customers_li_call"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
@@ -40,7 +40,7 @@
         android:onClick="clientsCall"
         android:src="@drawable/outline_phone_black_48"/>
     <ImageButton
-        android:id="@+id/imageButton_clients_li_navigate"
+        android:id="@+id/imageButton_customers_li_navigate"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
@@ -49,12 +49,12 @@
         android:onClick="clientsNavigate"
         android:src="@drawable/outline_navigation_black_48"/>
     <TextView
-        android:id="@+id/textView_clients_li_phone"
+        android:id="@+id/textView_customers_li_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
     <TextView
-        android:id="@+id/textView_clients_li_adress"
+        android:id="@+id/textView_customers_li_adress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
