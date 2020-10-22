@@ -47,17 +47,17 @@ public class dbHelper extends SQLiteOpenHelper {
                 + customersEntry.COL_ADRESS + " TEXT NOT NULL, "
                 + customersEntry.COL_NOTES + " TEXT);";
 
-        String DELIVERIES_CREATE_TABLE = "CREATE TABLE " + deliveryEntry.TABLE_NAME + " ("
-                + deliveryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + deliveryEntry.COL_CLIENT_ID + " TEXT NOT NULL, "
-                + deliveryEntry.COL_PRODUCTS_IDS + " TEXT NOT NULL, "
-                + deliveryEntry.COL_ALL_PRODUCTS_LOADED + " INTEGER, "
-                + deliveryEntry.COL_DELIVERY_STATE + " INTEGER);";
+        String ORDERS_CREATE_TABLE = "CREATE TABLE " + ordersEntry.TABLE_NAME + " ("
+                + ordersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ordersEntry.COL_CLIENT_ID + " TEXT NOT NULL, "
+                + ordersEntry.COL_PRODUCTS_IDS + " TEXT NOT NULL, "
+                + ordersEntry.COL_PRODUCTS_LOADED + " TEXT NOT NULL, "
+                + ordersEntry.COL_IS_DELIVERED + " INTEGER NOT NULL);";
 
         sqLiteDatabase.execSQL(REMINDERS_CREATE_TABLE);
         sqLiteDatabase.execSQL(WAREHOUSE_CREATE_TABLE);
         sqLiteDatabase.execSQL(CUSTOMERS_CREATE_TABLE);
-        sqLiteDatabase.execSQL(DELIVERIES_CREATE_TABLE);
+        sqLiteDatabase.execSQL(ORDERS_CREATE_TABLE);
     }
 
     @Override

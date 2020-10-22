@@ -70,7 +70,7 @@ public class remindersFragment extends Fragment implements LoaderManager.LoaderC
         View rootView=inflater.inflate(R.layout.reminders_layout,container,false);
 
         ListView lv=(ListView) rootView.findViewById(R.id.reminders_list_view);
-        View emptyView=rootView.findViewById(R.id.empty_view);
+        View emptyView=rootView.findViewById(R.id.reminders_empty_view);
         lv.setEmptyView(emptyView);
 
         dbHelper=new dbHelper(getContext());

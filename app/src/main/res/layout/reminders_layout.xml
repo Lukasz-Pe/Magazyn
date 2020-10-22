@@ -7,7 +7,7 @@
     tools:context=".ui.reminders.remindersFragment">
 
     <RelativeLayout
-        android:id="@+id/empty_view"
+        android:id="@+id/reminders_empty_view"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center">

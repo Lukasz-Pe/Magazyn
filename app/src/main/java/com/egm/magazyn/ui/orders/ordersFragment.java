@@ -1,4 +1,4 @@
-package com.egm.magazyn.ui.warehouse;
+package com.egm.magazyn.ui.orders;
 
 import android.content.ContentUris;
 import android.content.Intent;
@@ -22,28 +22,20 @@ import com.egm.magazyn.R;
 import com.egm.magazyn.data.dbClasses.dbHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import static com.egm.magazyn.data.dbClasses.dbContract.warehouseEntry.*;
+import static com.egm.magazyn.data.dbClasses.dbContract.ordersEntry.*;
 
-public class warehouseFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class ordersFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private com.egm.magazyn.data.dbClasses.dbHelper dbHelper;
-    private warehouseCursorAdapter cursorAdapter;
+    private ordersCursorAdapter cursorAdapter;
 
-    private static final int WAREHOUSE_LOADER =0;
-    static final String[] WAREHOUSE_PROJECTION =new String[]{
+    private static final int CLIENTS_LOADER =0;
+    static final String[] CLIENTS_PROJECTION =new String[]{
             _ID,
-            COL_PRODUCT_NAME,
-            COL_QUANTITY,
-            COL_ACCOUNTING_UNIT,
-            COL_UNIT_PRICE,
-            COL_QUANTITY_AFTER_LAST_DELIVERY,
-            COL_LOW_QUANTITY_WARNING,
-            COL_LOW_QUANTITY_WARNING_UNIT,
-            COL_LOW_QUANTITY_ALARM,
-            COL_LOW_QUANTITY_ALARM_UNIT,
-            COL_SOURCE,
-            COL_LAST_DELIVERY_PRICE,
-            COL_LAST_DELIVERY_DATE
+            COL_CLIENT_ID,
+            COL_PRODUCTS_IDS,
+            COL_PRODUCTS_LOADED,
+            COL_IS_DELIVERED
     };
 
     private static final String ARG_PARAM1="param1";
@@ -52,12 +44,12 @@ public class warehouseFragment extends Fragment implements LoaderManager.LoaderC
     private String mParam1;
     private String mParam2;
 
-    public warehouseFragment(){
+    public ordersFragment(){
         //Req empty public c'tor
     }
 
-    public static warehouseFragment newInstance(String param1, String param2){
-        warehouseFragment fragment=new warehouseFragment();
+    public static ordersFragment newInstance(String param1, String param2){
+        ordersFragment fragment=new ordersFragment();
         Bundle args=new Bundle();
         args.putString(ARG_PARAM1,param1);
         args.putString(ARG_PARAM2,param2);
@@ -83,27 +75,27 @@ public class warehouseFragment extends Fragment implements LoaderManager.LoaderC
         lv.setEmptyView(emptyView);
 
         dbHelper=new dbHelper(getContext());
-        cursorAdapter=new warehouseCursorAdapter(getContext(), null);
+        cursorAdapter=new ordersCursorAdapter(getContext(), null);
         lv.setAdapter(cursorAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent editWare=new Intent (getActivity(), warehouseEditorActivity.class);
+                Intent edit=new Intent (getActivity(), ordersEditorActivity.class);
                 Uri content= ContentUris.withAppendedId(CONTENT_URI, id);
-                editWare.setData(content);
-                startActivity(editWare);
+                edit.setData(content);
+                startActivity(edit);
             }
         });
 
-        final FloatingActionButton addPosition = (FloatingActionButton) rootView.findViewById(R.id.main_list_add_item);
-        addPosition.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionButton addItem = (FloatingActionButton) rootView.findViewById(R.id.main_list_add_item);
+        addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), warehouseEditorActivity.class);
+                Intent intent = new Intent(getActivity(), ordersEditorActivity.class);
                 startActivity(intent);
             }
         });
-        LoaderManager.getInstance(this).initLoader(WAREHOUSE_LOADER, null, this);
+        LoaderManager.getInstance(this).initLoader(CLIENTS_LOADER, null, this);
         return rootView;
     }
 
@@ -112,7 +104,7 @@ public class warehouseFragment extends Fragment implements LoaderManager.LoaderC
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         return new CursorLoader(getContext(),
                 CONTENT_URI,
-                WAREHOUSE_PROJECTION,
+                CLIENTS_PROJECTION,
                 null,null,null);
     }
 
@@ -125,4 +117,5 @@ public class warehouseFragment extends Fragment implements LoaderManager.LoaderC
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
     }
+
 }

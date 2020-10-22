@@ -104,20 +104,20 @@ public final class dbContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+remindersEntry.TABLE_NAME;
     }
 
-    public static final class deliveryEntry implements BaseColumns{
-        public final static String TABLE_NAME = "deliveries";
+    public static final class ordersEntry implements BaseColumns{
+        public final static String TABLE_NAME = "orders";
         public final static Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, TABLE_NAME);
         public final static String _ID=BaseColumns._ID;
         public final static String COL_CLIENT_ID = "customer_id";
         public final static String COL_PRODUCTS_IDS = "products_ids";
-        public final static String COL_ALL_PRODUCTS_LOADED = "all_products_are_loaded";
-        public final static String COL_DELIVERY_STATE = "is_delivered";
+        public final static String COL_PRODUCTS_LOADED = "all_products_are_loaded";
+        public final static String COL_IS_DELIVERED = "is_delivered";
 
         public static final String CONTENT_LIST_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+deliveryEntry.TABLE_NAME;
+                ContentResolver.CURSOR_DIR_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+ ordersEntry.TABLE_NAME;
 
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+deliveryEntry.TABLE_NAME;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE+"/"+CONTENT_AUTHORITY+"/"+ ordersEntry.TABLE_NAME;
     }
 
 }

@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.reminders.remindersFragment">
+    android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/empty_view"
@@ -18,11 +17,11 @@
         </RelativeLayout>
 
     <ListView
-        android:id="@+id/warehouse_list_view"
+        android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/warehouse_add_product"
+        android:id="@+id/main_list_add_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

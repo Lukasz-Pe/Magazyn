@@ -75,10 +75,10 @@ public class customersFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View rootView=inflater.inflate(R.layout.customers_layout,container,false);
+        View rootView=inflater.inflate(R.layout.main_list_layout,container,false);
 
-        ListView lv=(ListView) rootView.findViewById(R.id.customers_list_view);
-        View emptyView=rootView.findViewById(R.id.customers_empty_view);
+        ListView lv=(ListView) rootView.findViewById(R.id.list_view);
+        View emptyView=rootView.findViewById(R.id.empty_view);
         lv.setEmptyView(emptyView);
 
         dbHelper=new dbHelper(getContext());
@@ -94,7 +94,7 @@ public class customersFragment extends Fragment implements LoaderManager.LoaderC
             }
         });
 
-        final FloatingActionButton addClient = (FloatingActionButton) rootView.findViewById(R.id.clients_add);
+        final FloatingActionButton addClient = (FloatingActionButton) rootView.findViewById(R.id.main_list_add_item);
         addClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

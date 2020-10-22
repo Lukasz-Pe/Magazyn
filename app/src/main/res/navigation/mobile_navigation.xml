@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/nav_orders"
-        android:name="com.egm.magazyn.ui.general.myFragment"
+        android:name="com.egm.magazyn.ui.orders.ordersFragment"
         android:label="@string/menu_orders"
-        tools:layout="@layout/basic_layout" />
+        tools:layout="@layout/main_list_layout" />
 
     <fragment
         android:id="@+id/nav_warehouse"
         android:name="com.egm.magazyn.ui.warehouse.warehouseFragment"
         android:label="@string/menu_warehouse"
-        tools:layout="@layout/warehouse_layout" />
+        tools:layout="@layout/main_list_layout" />
 
     <fragment
         android:id="@+id/nav_shop"

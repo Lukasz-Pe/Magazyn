@@ -20,7 +20,8 @@ public class dbProvider extends ContentProvider {
     private static final int
             REMINDERS_TABLE =100, REMINDER_ITEM =101,
             WAREHOUSE_TABLE=102, WAREHOUSE_ITEM=103,
-            CLIENTS_TABLE=104, CLIENTS_ITEM=105;
+            CUSTOMERS_TABLE =104, CUSTOMERS_ITEM =105,
+            ORDERS_TABLE=106, ORDERS_ITEM=107;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     //Database and provider helper objects
@@ -29,8 +30,10 @@ public class dbProvider extends ContentProvider {
         sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.remindersEntry.TABLE_NAME+"/#", REMINDER_ITEM);
         sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.warehouseEntry.TABLE_NAME, WAREHOUSE_TABLE);
         sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.warehouseEntry.TABLE_NAME+"/#", WAREHOUSE_ITEM);
-        sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.customersEntry.TABLE_NAME, CLIENTS_TABLE);
-        sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.customersEntry.TABLE_NAME+"/#", CLIENTS_ITEM);
+        sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.customersEntry.TABLE_NAME, CUSTOMERS_TABLE);
+        sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.customersEntry.TABLE_NAME+"/#", CUSTOMERS_ITEM);
+        sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.ordersEntry.TABLE_NAME, ORDERS_TABLE);
+        sUriMatcher.addURI(dbContract.CONTENT_AUTHORITY, dbContract.ordersEntry.TABLE_NAME+"/#", ORDERS_ITEM);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class dbProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
-            case CLIENTS_TABLE:{
+            case CUSTOMERS_TABLE:{
                 cursor=db.query(dbContract.customersEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -98,10 +101,30 @@ public class dbProvider extends ContentProvider {
                         sortOrder);
                 break;
             }
-            case CLIENTS_ITEM:{
+            case CUSTOMERS_ITEM:{
                 selection= dbContract.customersEntry._ID+"=?";
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 cursor=db.query(dbContract.customersEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null, null,
+                        sortOrder);
+                break;
+            }
+            case ORDERS_TABLE:{
+                cursor=db.query(dbContract.ordersEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null, null,
+                        sortOrder);
+                break;
+            }
+            case ORDERS_ITEM:{
+                selection= dbContract.ordersEntry._ID+"=?";
+                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
+                cursor=db.query(dbContract.ordersEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -134,11 +157,17 @@ public class dbProvider extends ContentProvider {
             case WAREHOUSE_ITEM:{
                 return dbContract.warehouseEntry.CONTENT_ITEM_TYPE;
             }
-            case CLIENTS_TABLE:{
+            case CUSTOMERS_TABLE:{
                 return dbContract.customersEntry.CONTENT_LIST_TYPE;
             }
-            case CLIENTS_ITEM:{
+            case CUSTOMERS_ITEM:{
                 return dbContract.customersEntry.CONTENT_ITEM_TYPE;
+            }
+            case ORDERS_TABLE:{
+                return dbContract.ordersEntry.CONTENT_LIST_TYPE;
+            }
+            case ORDERS_ITEM:{
+                return dbContract.ordersEntry.CONTENT_ITEM_TYPE;
             }
             default:{
                 throw new IllegalArgumentException("Unknown URI " + uri + " with match " + match);
@@ -196,7 +225,7 @@ public class dbProvider extends ContentProvider {
                 }
                 return ContentUris.withAppendedId(uri, id);
             }
-            case CLIENTS_TABLE:{
+            case CUSTOMERS_TABLE:{
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 String names = contentValues.getAsString(dbContract.customersEntry.COL_NAMES);
                 String surname = contentValues.getAsString(dbContract.customersEntry.COL_SURNAME);
@@ -216,6 +245,32 @@ public class dbProvider extends ContentProvider {
                 }
                 getContext().getContentResolver().notifyChange(uri, null);
                 long id = db.insert(dbContract.customersEntry.TABLE_NAME, null, contentValues);
+                if(id<0){
+                    Log.e(LOG_TAG, "Failed to insert row for " + uri);
+                    return null;
+                }
+                return ContentUris.withAppendedId(uri, id);
+            }
+            case ORDERS_TABLE:{
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                String customer_id = contentValues.getAsString(dbContract.ordersEntry.COL_CLIENT_ID);
+                String products_ids = contentValues.getAsString(dbContract.ordersEntry.COL_PRODUCTS_IDS);
+                String all_products_loaded = contentValues.getAsString(dbContract.ordersEntry.COL_PRODUCTS_LOADED);
+                String delivered = contentValues.getAsString(dbContract.ordersEntry.COL_IS_DELIVERED);
+                if (customer_id == null) {
+                    throw new IllegalArgumentException("Names is required field!");
+                }
+                if(products_ids==null){
+                    throw new IllegalArgumentException("Surnames is required field!");
+                }
+                if(all_products_loaded==null){
+                    throw new IllegalArgumentException("Phone number is required field!");
+                }
+                if(delivered==null){
+                    throw new IllegalArgumentException("Adress is required field!");
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                long id = db.insert(dbContract.ordersEntry.TABLE_NAME, null, contentValues);
                 if(id<0){
                     Log.e(LOG_TAG, "Failed to insert row for " + uri);
                     return null;
@@ -253,16 +308,27 @@ public class dbProvider extends ContentProvider {
                 rowsDeleted=db.delete(dbContract.warehouseEntry.TABLE_NAME,selection,selectionArgs);
                 break;
             }
-            case CLIENTS_TABLE:{
+            case CUSTOMERS_TABLE:{
                 rowsDeleted=db.delete(dbContract.customersEntry.TABLE_NAME,selection,selectionArgs);
                 break;
             }
-            case CLIENTS_ITEM:{
+            case CUSTOMERS_ITEM:{
                 selection= dbContract.customersEntry._ID+"=?";
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 rowsDeleted=db.delete(dbContract.customersEntry.TABLE_NAME,selection,selectionArgs);
                 break;
             }
+            case ORDERS_TABLE:{
+                rowsDeleted=db.delete(dbContract.ordersEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            }
+            case ORDERS_ITEM:{
+                selection= dbContract.ordersEntry._ID+"=?";
+                selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted=db.delete(dbContract.ordersEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            }
+
             default:{
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
             }
@@ -295,10 +361,10 @@ public class dbProvider extends ContentProvider {
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateWarehouse(uri,contentValues, selection, selectionArgs);
             }
-            case CLIENTS_TABLE:{
+            case CUSTOMERS_TABLE:{
                 return updateClients(uri,contentValues, selection, selectionArgs);
             }
-            case CLIENTS_ITEM:{
+            case CUSTOMERS_ITEM:{
                 selection= dbContract.customersEntry._ID+"=?";
                 selectionArgs=new String[]{String.valueOf(ContentUris.parseId(uri))};
                 return updateClients(uri,contentValues, selection, selectionArgs);
