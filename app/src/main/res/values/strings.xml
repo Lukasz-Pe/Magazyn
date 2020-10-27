@@ -52,4 +52,5 @@
     <string name="client_notes">Notes</string>
     <string name="client_address">Clients\' adress</string>
     <string name="client_phone">Clients\' phone number</string>
+    <string name="order_choose_customer">Choose a customer</string>
 </resources>

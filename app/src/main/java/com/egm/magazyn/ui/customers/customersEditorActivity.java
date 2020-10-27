@@ -63,9 +63,9 @@ public class customersEditorActivity extends AppCompatActivity implements Loader
         phoneNumber = (EditText) findViewById(R.id.editText_customers_phone);
         address = (EditText) findViewById(R.id.editText_customers_address);
         notes = (EditText) findViewById(R.id.editText_customers_notes);
-        save = findViewById(R.id.fab_customers_save);
-        delete = findViewById(R.id.fab_customers_delete);
-        back = findViewById(R.id.fab_customers_back);
+        save = findViewById(R.id.fab_order_save);
+        delete = findViewById(R.id.fab_order_delete);
+        back = findViewById(R.id.fab_order_back);
         save.animate().translationY(-getResources().getDimension(R.dimen.fab_spacing));
         delete.animate().translationX(-getResources().getDimension(R.dimen.fab_spacing));
         delete.show();

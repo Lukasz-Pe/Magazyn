@@ -92,21 +92,21 @@
             />
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_customers_save"
+        android:id="@+id/fab_order_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/outline_save_black_48" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_customers_delete"
+        android:id="@+id/fab_order_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/outline_delete_black_48" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_customers_back"
+        android:id="@+id/fab_order_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
