@@ -110,6 +110,7 @@ public final class dbContract {
         public final static String _ID=BaseColumns._ID;
         public final static String COL_CLIENT_ID = "customer_id";
         public final static String COL_PRODUCTS_IDS = "products_ids";
+        public final static String COL_PRODUCTS_QUANTITY = "products_qty";
         public final static String COL_PRODUCTS_LOADED = "all_products_are_loaded";
         public final static String COL_IS_DELIVERED = "is_delivered";
 

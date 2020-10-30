@@ -53,4 +53,6 @@
     <string name="client_address">Adres klienta</string>
     <string name="client_phone">Numer telefonu klienta</string>
     <string name="order_choose_customer">Wybierz klienta</string>
+    <string name="question_btn_confirm">Potwierdź</string>
+    <string name="question_btn_cancel">Anuluj</string>
 </resources>

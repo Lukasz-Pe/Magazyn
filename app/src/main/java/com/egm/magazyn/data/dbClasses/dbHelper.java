@@ -51,6 +51,7 @@ public class dbHelper extends SQLiteOpenHelper {
                 + ordersEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ordersEntry.COL_CLIENT_ID + " TEXT NOT NULL, "
                 + ordersEntry.COL_PRODUCTS_IDS + " TEXT NOT NULL, "
+                + ordersEntry.COL_PRODUCTS_QUANTITY + " TEXT NOT NULL, "
                 + ordersEntry.COL_PRODUCTS_LOADED + " TEXT NOT NULL, "
                 + ordersEntry.COL_IS_DELIVERED + " INTEGER NOT NULL);";
 
